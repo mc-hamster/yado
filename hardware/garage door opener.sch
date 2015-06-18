@@ -9618,49 +9618,61 @@ general purpose rectifier, 1 A</description>
 </class>
 </classes>
 <parts>
-<part name="T1" library="transistor-neu-to92" deviceset="*-NPN-" device="SOT23-BEC" technology="MMBT3904LT1"/>
+<part name="T1" library="transistor-neu-to92" deviceset="*-NPN-" device="SOT23-BEC" technology="MMBT3904LT1">
+<attribute name="MPN" value="MMBT2222A"/>
+</part>
 <part name="K1" library="relay" deviceset="HE3621" device="">
 <attribute name="MPN" value="HE3621A0510"/>
 </part>
 <part name="JP1" library="pinhead" deviceset="PINHD-1X15" device=""/>
 <part name="JP2" library="pinhead" deviceset="PINHD-1X15" device=""/>
 <part name="JP3" library="pinhead" deviceset="PINHD-1X15" device=""/>
-<part name="OPEN1" library="adafruit" deviceset="1X2" device="-3.5MM"/>
-<part name="SENS1" library="adafruit" deviceset="1X2" device="-3.5MM"/>
+<part name="OPEN1" library="adafruit" deviceset="1X2" device="-3.5MM">
+<attribute name="MPN" value="OSTTE020161"/>
+</part>
+<part name="SENS1" library="adafruit" deviceset="1X2" device="-3.5MM">
+<attribute name="MPN" value="OSTTE020161"/>
+</part>
 <part name="+3V1" library="supply1" deviceset="+3V3" device=""/>
 <part name="P+1" library="supply1" deviceset="+5V" device=""/>
 <part name="GND1" library="supply1" deviceset="GND" device=""/>
-<part name="R1" library="resistor" deviceset="R-US_" device="R0603"/>
+<part name="R1" library="resistor" deviceset="R-US_" device="R0603" value="20"/>
 <part name="+3V2" library="supply1" deviceset="+3V3" device=""/>
 <part name="P+2" library="supply1" deviceset="+5V" device=""/>
 <part name="GND2" library="supply1" deviceset="GND" device=""/>
-<part name="R2" library="resistor" deviceset="R-US_" device="R0603" value="2.3k"/>
-<part name="D1" library="diode" deviceset="DIODE-" device="DO214BA"/>
-<part name="C1" library="resistor" deviceset="C-US" device="C0603"/>
-<part name="C2" library="resistor" deviceset="C-US" device="C0603"/>
+<part name="R2" library="resistor" deviceset="R-US_" device="R0603" value="4k"/>
+<part name="D1" library="diode" deviceset="DIODE-" device="DO214BA" value="1N4004"/>
+<part name="C1" library="resistor" deviceset="C-US" device="C0603" value="10uf"/>
+<part name="C2" library="resistor" deviceset="C-US" device="C0603" value="10uf"/>
 <part name="P+3" library="supply1" deviceset="+5V" device=""/>
 <part name="+3V3" library="supply1" deviceset="+3V3" device=""/>
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
 <part name="GND4" library="supply1" deviceset="GND" device=""/>
 <part name="LED1" library="resistor" deviceset="R-US_" device="R0603"/>
 <part name="LED2" library="resistor" deviceset="R-US_" device="R0603"/>
-<part name="SENS2" library="adafruit" deviceset="1X2" device="-3.5MM"/>
-<part name="R3" library="resistor" deviceset="R-US_" device="R0603"/>
+<part name="SENS2" library="adafruit" deviceset="1X2" device="-3.5MM">
+<attribute name="MPN" value="OSTTE020161"/>
+</part>
+<part name="R3" library="resistor" deviceset="R-US_" device="R0603" value="20"/>
 <part name="+3V4" library="supply1" deviceset="+3V3" device=""/>
 <part name="K2" library="relay" deviceset="HE3621" device="">
 <attribute name="MPN" value="HE3621A0510"/>
 </part>
-<part name="OPEN2" library="adafruit" deviceset="1X2" device="-3.5MM"/>
-<part name="T2" library="transistor-neu-to92" deviceset="*-NPN-" device="SOT23-BEC" technology="MMBT3904LT1"/>
+<part name="OPEN2" library="adafruit" deviceset="1X2" device="-3.5MM">
+<attribute name="MPN" value="OSTTE020161"/>
+</part>
+<part name="T2" library="transistor-neu-to92" deviceset="*-NPN-" device="SOT23-BEC" technology="MMBT3904LT1">
+<attribute name="MPN" value="MMBT2222A"/>
+</part>
 <part name="P+4" library="supply1" deviceset="+5V" device=""/>
-<part name="D2" library="diode" deviceset="DIODE-" device="DO214BA"/>
-<part name="R4" library="resistor" deviceset="R-US_" device="R0603" value="2.3k"/>
+<part name="D2" library="diode" deviceset="DIODE-" device="DO214BA" value="1N4004"/>
+<part name="R4" library="resistor" deviceset="R-US_" device="R0603" value="4k"/>
 <part name="GND5" library="supply1" deviceset="GND" device=""/>
 <part name="JP4" library="pinhead" deviceset="PINHD-1X3" device=""/>
 <part name="D3" library="diode" deviceset="1N4004" device=""/>
 <part name="D4" library="diode" deviceset="1N4004" device=""/>
-<part name="R5" library="resistor" deviceset="R-US_" device="R0603"/>
-<part name="R6" library="resistor" deviceset="R-US_" device="R0603"/>
+<part name="R5" library="resistor" deviceset="R-US_" device="R0603" value="1k"/>
+<part name="R6" library="resistor" deviceset="R-US_" device="R0603" value="1k"/>
 </parts>
 <sheets>
 <sheet>
@@ -9670,14 +9682,20 @@ general purpose rectifier, 1 A</description>
 <text x="101.6" y="38.1" size="1.778" layer="95">GPIO014</text>
 </plain>
 <instances>
-<instance part="T1" gate="G$1" x="149.86" y="101.6"/>
+<instance part="T1" gate="G$1" x="149.86" y="101.6">
+<attribute name="MPN" x="149.86" y="101.6" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="K1" gate="1" x="152.4" y="114.3"/>
 <instance part="K1" gate="2" x="165.1" y="114.3"/>
 <instance part="JP1" gate="A" x="60.96" y="38.1"/>
 <instance part="JP2" gate="A" x="68.58" y="38.1"/>
 <instance part="JP3" gate="A" x="119.38" y="38.1"/>
-<instance part="OPEN1" gate="G$1" x="180.34" y="114.3"/>
-<instance part="SENS1" gate="G$1" x="180.34" y="38.1"/>
+<instance part="OPEN1" gate="G$1" x="180.34" y="114.3">
+<attribute name="MPN" x="180.34" y="114.3" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="SENS1" gate="G$1" x="180.34" y="38.1">
+<attribute name="MPN" x="180.34" y="38.1" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="+3V1" gate="G$1" x="111.76" y="68.58"/>
 <instance part="P+1" gate="1" x="71.12" y="68.58"/>
 <instance part="GND1" gate="1" x="73.66" y="12.7"/>
@@ -9695,13 +9713,19 @@ general purpose rectifier, 1 A</description>
 <instance part="GND4" gate="1" x="55.88" y="73.66"/>
 <instance part="LED1" gate="G$1" x="78.74" y="43.18" rot="R90"/>
 <instance part="LED2" gate="G$1" x="83.82" y="38.1" rot="R90"/>
-<instance part="SENS2" gate="G$1" x="180.34" y="25.4"/>
+<instance part="SENS2" gate="G$1" x="180.34" y="25.4">
+<attribute name="MPN" x="180.34" y="25.4" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="R3" gate="G$1" x="165.1" y="27.94"/>
 <instance part="+3V4" gate="G$1" x="157.48" y="33.02"/>
 <instance part="K2" gate="1" x="152.4" y="76.2"/>
 <instance part="K2" gate="2" x="167.64" y="76.2"/>
-<instance part="OPEN2" gate="G$1" x="180.34" y="76.2"/>
-<instance part="T2" gate="G$1" x="149.86" y="63.5"/>
+<instance part="OPEN2" gate="G$1" x="180.34" y="76.2">
+<attribute name="MPN" x="180.34" y="76.2" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="T2" gate="G$1" x="149.86" y="63.5">
+<attribute name="MPN" x="149.86" y="63.5" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="P+4" gate="1" x="152.4" y="88.9"/>
 <instance part="D2" gate="G$1" x="142.24" y="76.2" rot="R90"/>
 <instance part="R4" gate="G$1" x="139.7" y="63.5"/>
