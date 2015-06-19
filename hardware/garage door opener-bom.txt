@@ -1,4 +1,4 @@
-Partlist exported from Z:/Documents/CloudStation/projects/garage_door_opener/arduino/garagedooropener2/garagedooropener2/pcb/garage door opener.sch at 6/18/2015 3:29:51 PM
+Partlist exported from //vmware-host/Shared Folders/Documents/CloudStation/projects/garage_door_opener/arduino/garagedooropener2/garagedooropener2/pcb/garage door opener.sch at 6/18/2015 4:52:06 PM
 
 Part  Value     Device                    Package   Description                MF     MPN         OC_FARNELL OC_NEWARK
 C1    10uf      C-USC0603                 C0603     CAPACITOR, American symbol                                        
@@ -23,6 +23,8 @@ R3    20        R-US_R0603                R0603     RESISTOR, American symbol
 R4    4k        R-US_R0603                R0603     RESISTOR, American symbol                                         
 R5    1k        R-US_R0603                R0603     RESISTOR, American symbol                                         
 R6    1k        R-US_R0603                R0603     RESISTOR, American symbol                                         
+R7    10k       R-US_R0603                R0603     RESISTOR, American symbol                                         
+R8    10k       R-US_R0603                R0603     RESISTOR, American symbol                                         
 SENS1 1X2-3.5MM 1X2-3.5MM                 1X2-3.5MM 3.5mm Terminal block              OSTTE020161                     
 SENS2 1X2-3.5MM 1X2-3.5MM                 1X2-3.5MM 3.5mm Terminal block              OSTTE020161                     
 T1              MMBT3904LT1-NPN-SOT23-BEC SOT23-BEC NPN Transistror                   MMBT2222A                       

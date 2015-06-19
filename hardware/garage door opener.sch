@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -9673,6 +9673,10 @@ general purpose rectifier, 1 A</description>
 <part name="D4" library="diode" deviceset="1N4004" device=""/>
 <part name="R5" library="resistor" deviceset="R-US_" device="R0603" value="1k"/>
 <part name="R6" library="resistor" deviceset="R-US_" device="R0603" value="1k"/>
+<part name="R7" library="resistor" deviceset="R-US_" device="R0603" value="10k"/>
+<part name="R8" library="resistor" deviceset="R-US_" device="R0603" value="10k"/>
+<part name="GND6" library="supply1" deviceset="GND" device=""/>
+<part name="GND7" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -9680,6 +9684,7 @@ general purpose rectifier, 1 A</description>
 <text x="101.6" y="53.34" size="1.778" layer="95">GPIO05</text>
 <text x="101.6" y="50.8" size="1.778" layer="95">GPIO04</text>
 <text x="101.6" y="38.1" size="1.778" layer="95">GPIO014</text>
+<text x="101.6" y="35.56" size="1.778" layer="95">GPIO012</text>
 </plain>
 <instances>
 <instance part="T1" gate="G$1" x="149.86" y="101.6">
@@ -9735,6 +9740,10 @@ general purpose rectifier, 1 A</description>
 <instance part="D4" gate="1" x="137.16" y="76.2" rot="R90"/>
 <instance part="R5" gate="G$1" x="96.52" y="48.26"/>
 <instance part="R6" gate="G$1" x="96.52" y="43.18"/>
+<instance part="R7" gate="G$1" x="144.78" y="15.24" rot="R90"/>
+<instance part="R8" gate="G$1" x="152.4" y="15.24" rot="R90"/>
+<instance part="GND6" gate="1" x="152.4" y="7.62"/>
+<instance part="GND7" gate="1" x="144.78" y="7.62"/>
 </instances>
 <busses>
 </busses>
@@ -9868,6 +9877,14 @@ general purpose rectifier, 1 A</description>
 <pinref part="GND5" gate="1" pin="GND"/>
 <wire x1="152.4" y1="58.42" x2="152.4" y2="55.88" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="R8" gate="G$1" pin="1"/>
+<pinref part="GND6" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="R7" gate="G$1" pin="1"/>
+<pinref part="GND7" gate="1" pin="GND"/>
+</segment>
 </net>
 <net name="+3V3" class="0">
 <segment>
@@ -9990,17 +10007,25 @@ general purpose rectifier, 1 A</description>
 <net name="N$22" class="0">
 <segment>
 <pinref part="SENS2" gate="G$1" pin="2"/>
-<wire x1="137.16" y1="25.4" x2="175.26" y2="25.4" width="0.1524" layer="91"/>
+<wire x1="137.16" y1="25.4" x2="152.4" y2="25.4" width="0.1524" layer="91"/>
 <pinref part="JP3" gate="A" pin="9"/>
+<wire x1="152.4" y1="25.4" x2="175.26" y2="25.4" width="0.1524" layer="91"/>
 <wire x1="137.16" y1="25.4" x2="127" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="127" y1="35.56" x2="116.84" y2="35.56" width="0.1524" layer="91"/>
+<pinref part="R8" gate="G$1" pin="2"/>
+<wire x1="152.4" y1="20.32" x2="152.4" y2="25.4" width="0.1524" layer="91"/>
+<junction x="152.4" y="25.4"/>
 </segment>
 </net>
 <net name="N$14" class="0">
 <segment>
 <pinref part="SENS1" gate="G$1" pin="2"/>
 <pinref part="JP3" gate="A" pin="8"/>
-<wire x1="175.26" y1="38.1" x2="116.84" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="175.26" y1="38.1" x2="144.78" y2="38.1" width="0.1524" layer="91"/>
+<pinref part="R7" gate="G$1" pin="2"/>
+<wire x1="144.78" y1="38.1" x2="116.84" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="144.78" y1="20.32" x2="144.78" y2="38.1" width="0.1524" layer="91"/>
+<junction x="144.78" y="38.1"/>
 </segment>
 </net>
 <net name="N$10" class="0">
