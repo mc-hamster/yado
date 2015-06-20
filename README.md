@@ -23,5 +23,5 @@
 2. Install board support for the ESP8266: https://github.com/esp8266/Arduino
 3. Install CH341 USB to TTL Bridge Drivers: http://www.electrodragon.com/w/CH341
 4. Load the Yagdo code into the Arduino IDE
-5. Change the settings in the "Settings" section
+5. Change the settings in the "Settings" section of the YADO source code.
 6. Compile and load the code into your nodemcu dev board.
