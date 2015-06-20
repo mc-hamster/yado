@@ -11,8 +11,9 @@
 1. Open source code available in ./src.
 2. Completed Features:
  1. Digest based authentication (No clear text passwords) ... Done
- 2. Support for DHCP / Static addresses ... Done
+ 2. Support for DHCP & Static addresses ... Done
  3. JSON REST API to read door sensors ... Done
+ 4. Serve all javascript libaries locally ... DONE
 4. In progress
  1. USB Interface to configure all settings ... In progress
  2. Web Admin Interface for configuration ... Not started
