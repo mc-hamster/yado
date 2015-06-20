@@ -1,13 +1,20 @@
 # yagdo
-"Yet Another Garage Door Opener" ... ESP8266 based Garage Door Controller with JSON REST API and Secure Password ACL.
+"Yet Another  Door Opener" ... ESP8266 based Garage Door Controller with JSON REST API and Secure Password ACL.
 
 ## Features
 
 1. Open hardware available in ./hardware
  1. PCB available for purchase at OSHPark: TBD
  2. Full BOM available with distributor list: TBD (See BOM in ./hardware for part list)
-1. Open hardware available in ./src. Features:
- 1. tbd
+1. Open hardware available in ./src.
+2. Completed Features:
+ 1. Digest based authentication (No clear text passwords) ... Done
+ 2. Support for DHCP / Static addresses ... Done
+ 3. JSON REST API to read door sensors ... Done
+4. In progress
+ 1. USB Interface to configure all settings ... In progress
+ 2. Web Admin Interface for configuration ... Not started
+ 3. ... And more!
 
 ## To build code:
 
