@@ -1,5 +1,5 @@
-# yagdo
-"Yet Another  Door Opener" ... ESP8266 based Garage Door Controller with JSON REST API and Secure Password ACL.
+# yado (Pronounced Yah-Dew)
+"Yet Another  Door Opener" ... ESP8266 based Door Controller with JSON REST API and Secure Password ACL.
 
 ## Features
 
