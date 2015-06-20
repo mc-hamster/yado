@@ -14,6 +14,7 @@
 4. In progress
  1. USB Interface to configure all settings ... In progress
  2. Web Admin Interface for configuration ... Not started
+ 3. JSON REST API to open/close door ... Not started
  3. ... And more!
 
 ## To build code:
