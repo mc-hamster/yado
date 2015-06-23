@@ -9685,6 +9685,9 @@ general purpose rectifier, 1 A</description>
 <text x="101.6" y="50.8" size="1.778" layer="95">GPIO04</text>
 <text x="101.6" y="38.1" size="1.778" layer="95">GPIO014</text>
 <text x="101.6" y="35.56" size="1.778" layer="95">GPIO012</text>
+<text x="22.86" y="20.32" size="1.778" layer="97">+3V3
+GND
++5V</text>
 </plain>
 <instances>
 <instance part="T1" gate="G$1" x="149.86" y="101.6">
@@ -10135,4 +10138,10 @@ general purpose rectifier, 1 A</description>
 </sheets>
 </schematic>
 </drawing>
+<compatibility>
+<note version="6.3" minversion="6.2.2" severity="warning">
+Since Version 6.2.2 text objects can contain more than one line,
+which will not be processed correctly with this version.
+</note>
+</compatibility>
 </eagle>
