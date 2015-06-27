@@ -23,6 +23,7 @@ EEPROM_readAnything(0, settings);
     Serial.println ( "  3) Access Control" );
     Serial.println ( "  4) Statistics" );
     Serial.println ( "  5) Reset to Factory Settings" );
+    Serial.println ( "  6) Reboot Yado" );
     Serial.println ( "" ) ;
     Serial.print ( "Make a selection: " );
   }
@@ -101,6 +102,17 @@ EEPROM_readAnything(0, settings);
     Serial.print ( F("Make a selection: ") );
   }
 
+  if (whatMenu == "6" ) {
+    Serial.println ( "" ) ;
+    Serial.println ( F(">>Reboot Yado") );
+    Serial.println ( "" ) ;
+    Serial.println ( F("  This will reboot your Yagdo. Are you sure?") ) ;
+    Serial.println ( F("  To Confirm, type: yes") ) ;
+    Serial.println ( F("  Otherwise, type: x to return to main menu") ) ;
+    Serial.println ( "" ) ;
+    Serial.print ( F("Make a selection: ") );
+  }
+
 }
 
 void menuLoop(void) {
@@ -142,6 +154,8 @@ void menuLoop(void) {
         menuPath = "4";
       } else if ( inputString == "5" ) {
         menuPath = "5";
+      } else if ( inputString == "6" ) {
+        menuPath = "6";
 
         
       }
@@ -195,6 +209,24 @@ void menuLoop(void) {
         Serial.println ( " DONE!" );
         Serial.println ( "" );
         menuPath = "0";
+      }
+
+    } else if (menuPath == "6" ) {
+      //printMenu ( "5" ) ;
+
+      // I don't trust the existing methods to reboot the uC. Here, we will place the uC into a loop
+      //   which will trigger the watchdog.
+      if ( inputString == "x" ) {
+        menuPath = "0";
+      } else if (inputString == "yes") {
+        Serial.println ( "" );
+        Serial.println ( "Rebooting..." ) ;
+
+        for (;;) {
+        }
+        //delay(250);
+        
+        //eepromClear();      
       }
 
     }
