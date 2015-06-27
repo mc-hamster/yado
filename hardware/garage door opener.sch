@@ -9588,24 +9588,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="1N4004" prefix="D">
-<description>&lt;B&gt;DIODE&lt;/B&gt;&lt;p&gt;
-general purpose rectifier, 1 A</description>
-<gates>
-<gate name="1" symbol="D" x="0" y="0"/>
-</gates>
-<devices>
-<device name="" package="DO41-10">
-<connects>
-<connect gate="1" pin="A" pad="A"/>
-<connect gate="1" pin="C" pad="C"/>
-</connects>
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
 </devicesets>
 </library>
 </libraries>
@@ -9669,8 +9651,6 @@ general purpose rectifier, 1 A</description>
 <part name="R4" library="resistor" deviceset="R-US_" device="R0603" value="4k"/>
 <part name="GND5" library="supply1" deviceset="GND" device=""/>
 <part name="JP4" library="pinhead" deviceset="PINHD-1X3" device=""/>
-<part name="D3" library="diode" deviceset="1N4004" device=""/>
-<part name="D4" library="diode" deviceset="1N4004" device=""/>
 <part name="R5" library="resistor" deviceset="R-US_" device="R0603" value="1k"/>
 <part name="R6" library="resistor" deviceset="R-US_" device="R0603" value="1k"/>
 <part name="R7" library="resistor" deviceset="R-US_" device="R0603" value="10k"/>
@@ -9739,8 +9719,6 @@ GND
 <instance part="R4" gate="G$1" x="139.7" y="63.5"/>
 <instance part="GND5" gate="1" x="152.4" y="53.34"/>
 <instance part="JP4" gate="A" x="35.56" y="22.86"/>
-<instance part="D3" gate="1" x="137.16" y="114.3" rot="R90"/>
-<instance part="D4" gate="1" x="137.16" y="76.2" rot="R90"/>
 <instance part="R5" gate="G$1" x="96.52" y="48.26"/>
 <instance part="R6" gate="G$1" x="96.52" y="43.18"/>
 <instance part="R7" gate="G$1" x="144.78" y="15.24" rot="R90"/>
@@ -9949,9 +9927,6 @@ GND
 <wire x1="147.32" y1="121.92" x2="152.4" y2="121.92" width="0.1524" layer="91"/>
 <junction x="152.4" y="121.92"/>
 <pinref part="D1" gate="G$1" pin="C"/>
-<pinref part="D3" gate="1" pin="C"/>
-<wire x1="142.24" y1="116.84" x2="137.16" y2="116.84" width="0.1524" layer="91"/>
-<junction x="142.24" y="116.84"/>
 </segment>
 <segment>
 <pinref part="C1" gate="G$1" pin="1"/>
@@ -9966,9 +9941,6 @@ GND
 <wire x1="142.24" y1="78.74" x2="147.32" y2="83.82" width="0.1524" layer="91"/>
 <wire x1="147.32" y1="83.82" x2="152.4" y2="83.82" width="0.1524" layer="91"/>
 <junction x="152.4" y="83.82"/>
-<pinref part="D4" gate="1" pin="C"/>
-<wire x1="142.24" y1="78.74" x2="137.16" y2="78.74" width="0.1524" layer="91"/>
-<junction x="142.24" y="78.74"/>
 </segment>
 </net>
 <net name="N$15" class="0">
@@ -9988,9 +9960,6 @@ GND
 <wire x1="147.32" y1="106.68" x2="152.4" y2="106.68" width="0.1524" layer="91"/>
 <junction x="152.4" y="106.68"/>
 <pinref part="D1" gate="G$1" pin="A"/>
-<pinref part="D3" gate="1" pin="A"/>
-<wire x1="137.16" y1="111.76" x2="142.24" y2="111.76" width="0.1524" layer="91"/>
-<junction x="142.24" y="111.76"/>
 </segment>
 </net>
 <net name="N$18" class="0">
@@ -10072,9 +10041,6 @@ GND
 <wire x1="142.24" y1="73.66" x2="147.32" y2="68.58" width="0.1524" layer="91"/>
 <wire x1="147.32" y1="68.58" x2="152.4" y2="68.58" width="0.1524" layer="91"/>
 <junction x="152.4" y="68.58"/>
-<pinref part="D4" gate="1" pin="A"/>
-<wire x1="137.16" y1="73.66" x2="142.24" y2="73.66" width="0.1524" layer="91"/>
-<junction x="142.24" y="73.66"/>
 </segment>
 </net>
 <net name="N$17" class="0">
