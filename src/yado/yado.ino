@@ -31,7 +31,6 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-//#include <ESP8266mDNS.h>
 #include <Hash.h>
 #include <EEPROM.h>
 #include "EEPROMAnything.h"
@@ -57,14 +56,14 @@ struct settings_t
 char access[64];
 
 // the IP address for the shield:
-IPAddress ipAddress(10, 11, 12, 36);
-IPAddress ipGateway(10, 11, 12, 1);
-IPAddress ipSubnet(255, 255, 255, 0);
+IPAddress ipAddress(0, 0, 0, 0);
+IPAddress ipGateway(0, 0, 0, 0);
+IPAddress ipSubnet(0, 0, 0, 0);
 
 boolean useDHCP = false;  // If false, use manual IP address (above)
 
 
-int requestTTL = 600;
+int requestTTL = 60;
 
 // Configuration End
 
@@ -124,7 +123,15 @@ void setup ( void ) {
   // Read settings from EEPROM;
   EEPROM_readAnything(0, settings);
 
+
+
   WiFi.begin ( ssid, password );
+
+  // Documentation says this is supposed to come before WiFi.begin, but when it is there -- it doesn't work. WHY?!?!?!
+  if (!useDHCP) { // If true, use manual IP address
+    WiFi.config ( ipAddress, ipGateway, ipSubnet) ;
+  }
+  
   Serial.println ( "" );
 
   EEPROM_readAnything(0, settings);
@@ -136,15 +143,12 @@ void setup ( void ) {
   }
   
   digitalWrite ( ledCONNECTED, 1 );
-  WiFi.printDiag(Serial);
 
-  if (!useDHCP) { // If true, use manual IP address
-    WiFi.config ( ipAddress, ipGateway, ipSubnet) ;
-  }
+  WiFi.printDiag(Serial);
 
   //Serial.println ( "" );
   //Serial.print ( "Connected to " );
-  Serial.println ( ssid );
+  //Serial.println ( ssid );
   Serial.print ( "IP address: " );
   Serial.println ( WiFi.localIP() );
 
@@ -152,7 +156,7 @@ void setup ( void ) {
   //   We should look for other ways to improve the seed. This should be "good enough" for now.
   randomSeed(micros());
   secretRandNumber = random(2147483646); // Full range of long 2147483647
-  Serial.println("Secret " + String(secretRandNumber));
+  Serial.println("Secret: " + String(secretRandNumber));
 
   server.on ( "/", handleRoot );
   server.on ( "/externalScript.js", handleExternalScriptJS );
