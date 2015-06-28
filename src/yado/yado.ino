@@ -12,7 +12,7 @@
  *   list of conditions and the following disclaimer in the documentation and/or
  *   other materials provided with the distribution.
  *
- * * Neither the name of Majenko Technologies nor the names of its
+ * * Neither the name of Jm Casler nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
  *
@@ -74,7 +74,7 @@ ESP8266WebServer server ( 80 );
 const int ledHTTP = 0;     // Toggled on HTTP Status
 const int ledCONNECTED = 2; // Toggled on when AP connected
 const int sensor1 = 14; 
-const int sensor2 = 12;   // pushbutton connected to digital pin 7
+const int sensor2 = 12;
 const int open1 = 5;
 const int open2 = 4;
 
@@ -108,9 +108,14 @@ void setup ( void ) {
   digitalWrite ( open2, 0 );
 
 
-  // Set sensors as inputs
-  pinMode ( sensor1, INPUT_PULLDOWN );
-  pinMode ( sensor2, INPUT_PULLDOWN );  
+  // Set sensors as inputs with internal pulldown
+  //  There is a bug in the esp8266 library which prevents the pulldown from functioning
+  //    https://github.com/esp8266/Arduino/issues/478
+  //
+  pinMode ( sensor1, INPUT );
+  pinMode ( sensor2, INPUT );  
+  //digitalWrite ( sensor1, 0 );
+  //digitalWrite ( sensor2, 0 );
 
   // Set status LEDs to OUTPUT
   pinMode ( ledHTTP, OUTPUT );
@@ -151,6 +156,7 @@ void setup ( void ) {
   //Serial.println ( ssid );
   Serial.print ( "IP address: " );
   Serial.println ( WiFi.localIP() );
+  printMacAddress();
 
   // We are using the amount of time required to connect to the AP as the seed to a random number generator.
   //   We should look for other ways to improve the seed. This should be "good enough" for now.
@@ -172,6 +178,9 @@ void loop ( void ) {
   server.handleClient();
 
   menuLoop() ;
+
+  //Serial.println ( digitalRead(sensor1) ) ;
+  //delay (50) ;
 
 }
 

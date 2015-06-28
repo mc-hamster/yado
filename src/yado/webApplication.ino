@@ -1,3 +1,10 @@
+
+//char tempArray[5000];
+
+void handleExternalScriptJS() {
+  digitalWrite ( ledHTTP, 1 );
+
+
 String externJavascriptString = "\n"
                                 "function validateForm () { \n"
                                 "  var x = document.forms['myForm']['password'].value;\n"
@@ -26,10 +33,6 @@ String externJavascriptString = "\n"
                                 "k)-899497514);j=k;k=e;e=g<<30|g>>>2;g=h;h=c}b[0]=b[0]+h|0;b[1]=b[1]+g|0;b[2]=b[2]+e|0;b[3]=b[3]+k|0;b[4]=b[4]+j|0},_doFinalize:function(){var f=this._data,e=f.words,b=8*this._nDataBytes,h=8*f.sigBytes;e[h>>>5]|=128<<24-h%32;e[(h+64>>>9<<4)+14]=Math.floor(b/4294967296);e[(h+64>>>9<<4)+15]=b;f.sigBytes=4*e.length;this._process();return this._hash},clone:function(){var e=j.clone.call(this);e._hash=this._hash.clone();return e}});e.SHA1=j._createHelper(m);e.HmacSHA1=j._createHmacHelper(m)})();";
 
 
-
-
-void handleExternalScriptJS() {
-  digitalWrite ( ledHTTP, 1 );
 
   if (0) {
     // TODO: If we recieve a If-None-Match header and it matches the Etag we defined, then
@@ -70,7 +73,7 @@ void handleRoot() {
 
   // TODO: Have this be configurable
 
-  char temp[2000];
+  //char temp[2000];
   int sec = millis() / 1000; // TODO: Revert to the previous line. This is here for debugging.
   int min = sec / 60;
   int hr = min / 60;
@@ -150,8 +153,10 @@ void handleRoot() {
       lastAccessTime = requestTime.toInt();
       Serial.println ( "Yay!" );
       digitalWrite ( open1, 1 );
-      delay(100);
+      digitalWrite ( ledCONNECTED, 0 );
+      delay(200);
       digitalWrite ( open1, 0 );
+      digitalWrite ( ledCONNECTED, 1 );
     }
 
   } else {
@@ -161,39 +166,62 @@ void handleRoot() {
   }
 
   char upTimeString[20];
+
+//  externJavascriptString.toCharArray(tempArray, 5000);
   snprintf ( upTimeString, 20, "%02d:%02d:%02d", hr, min % 60, sec % 60) ; // 00:38:47 0123456789
 
-  snprintf ( temp, 2000,
+  String message = "\n\n";
 
-             "<html>\
-  <head>\
-    <meta http-equiv='refresh' content='%d; url=/'/>\
-    <meta name='viewport' content='initial-scale=1.5, user-scalable=no'>\
-    <title>Garage Door Opener</title>\
-    <script src='externalScript.js'></script>\
-    <style>\
-      body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }\
-    </style>\
-  </head>\
-  <body>\
-    <h2>Garage Door Opener</h1>\
-    Sensor1: %d Sensor2: %d <br>\
-    <form name=myForm method=get onsubmit=\"return validateForm()\" >\
-    <input type=hidden name=time value=%d><br>\
-    Password: <input type=password name=password value=><br>\
-    <!-- Request Password (Computed in Javascript) : --><input type=hidden size=50 name=requestPassword>\
-    <!-- Server Digest:  --><input type=hidden name=serverDigest value=%20s size=50>\
-    <input type=submit value=Open>\
-    </form>\
-    <p>Uptime: %20s</p>\
-  </body>\
-</html>",
 
-             requestTTL, digitalRead(sensor1), digitalRead(sensor2), sec, digestStringHex, upTimeString
-           );
+  //snprintf ( temp, 8000,
 
-  server.send ( 200, "text/html", temp );
+  message += "<html>\n";
+  message += " <head>\n";
+  message += "  <meta http-equiv='refresh' content='"  +  String(requestTTL) + "; url=/'/>\n";
+  message += "  <meta name='viewport' content='initial-scale=1.5, user-scalable=no'>\n";
+  message += "  <link rel=\"icon\" href=\"data:;base64,iVBORw0KGgo=\">\n";
+  message += "  <title>Garage Door Opener</title>\n";
+//  message += "  <!script src='externalScript.js'></script>\n";
+  message += "  <script src='http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha1.js'></script>\n";
+  message += "  <script>\n";
+  message += "function validateForm () { \n";
+  message += "  var x = document.forms['myForm']['password'].value;\n";
+  message += "  if (x == null || x == '') {\n";
+  message += "      alert('Password must be filled');\n";
+  message += "      return false;\n";
+  message += "  }\n";
+  message += "  var requestPassword = CryptoJS.SHA1(document.forms['myForm']['password'].value + document.forms['myForm']['serverDigest'].value);\n";
+  message += "  document.forms['myForm']['password'].value = '';\n";
+  message += "  document.forms['myForm']['requestPassword'].value = requestPassword;\n";
+  message += "  return true; \n";
+  message += "}\n";
+  message += "  </script>\n";
+  message += "  <style>\n";
+  message += "    body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }\n";
+  message += "  </style>\n";
+  message += "</head>\n";
+  message += "<body>\n";
+  message += "  <h2>Garage Door Opener</h1>\n";
+  message += "  Sensor1: "  +  String(digitalRead(sensor1)) + " Sensor2: "  +  String(digitalRead(sensor2)) + " <br>\n";
+  message += "  <form name=myForm method=get onsubmit=\"return validateForm()\" >\n";
+  message += "  <input type=hidden name=time value="  +  String(sec) + "><br>\n";
+  message += "  Password: <input type=password name=password value=><br>\n";
+  message += "  <!-- Request Password (Computed in Javascript) : --><input type=hidden size=50 name=requestPassword>\n";
+  message += "  <!-- Server Digest:  --><input type=hidden name=serverDigest value="  +  String(digestStringHex) + " size=50>\n";
+  message += "  <input type=submit value=Open>\n";
+  message += "  </form>\n";
+  message += "  <p>Uptime: "  +  String(upTimeString) + "</p>\n";
+  message += "</body>\n";
+  message += "</html>\n";
+
+  //           requestTTL, digitalRead(sensor1), digitalRead(sensor2), sec, digestStringHex, upTimeString
+  //         );
+
+  server.send ( 200, "text/html", message );
+//  server.send ( 200, "text/html", "hello" );
   digitalWrite ( ledHTTP, 0 );
+
+//  Serial.println ( ESP.getFreeHeap() );
 }
 
 void handleNotFound() {
