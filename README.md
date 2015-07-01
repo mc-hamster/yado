@@ -22,6 +22,13 @@
 4. Planned
  1. RFID Card support
 
+## JSON REST
+
+1. /json/sensors
+ 1. Return state of the sensors
+2. /json/digest/new
+ 1. Generate a new server digest and associated time
+
 ## To build code:
 
 1. Install Arduino IDE (It's a horrible environment, but the best for ESP8266): http://arduino.cc
