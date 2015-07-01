@@ -1,3 +1,9 @@
+//#include <ESP8266WiFi.h>
+//#include <ESP8266WiFiMulti.h>
+//#include <WiFiClient.h>
+//#include <WiFiServer.h>
+//#include <WiFiUdp.h>
+
 /*
  * Copyright (c) 2015, Jm Casler
  * All rights reserved.
@@ -34,6 +40,8 @@
 #include <Hash.h>
 #include <EEPROM.h>
 #include "EEPROMAnything.h"
+
+// Developed using latest ESP8266WebServer from  https://github.com/igrr/Arduino/tree/esp8266/hardware/esp8266com/esp8266/libraries/ESP8266WebServer
 
 
 // Configuration Start
@@ -108,14 +116,10 @@ void setup ( void ) {
   digitalWrite ( open2, 0 );
 
 
-  // Set sensors as inputs with internal pulldown
   //  There is a bug in the esp8266 library which prevents the pulldown from functioning
-  //    https://github.com/esp8266/Arduino/issues/478
-  //
+  //    https://github.com/esp8266/Arduino/issues/478 
   pinMode ( sensor1, INPUT );
   pinMode ( sensor2, INPUT );  
-  //digitalWrite ( sensor1, 0 );
-  //digitalWrite ( sensor2, 0 );
 
   // Set status LEDs to OUTPUT
   pinMode ( ledHTTP, OUTPUT );
@@ -151,9 +155,6 @@ void setup ( void ) {
 
   WiFi.printDiag(Serial);
 
-  //Serial.println ( "" );
-  //Serial.print ( "Connected to " );
-  //Serial.println ( ssid );
   Serial.print ( "IP address: " );
   Serial.println ( WiFi.localIP() );
   printMacAddress();
@@ -178,9 +179,6 @@ void loop ( void ) {
   server.handleClient();
 
   menuLoop() ;
-
-  //Serial.println ( digitalRead(sensor1) ) ;
-  //delay (50) ;
 
 }
 
