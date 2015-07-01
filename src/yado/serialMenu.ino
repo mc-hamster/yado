@@ -212,21 +212,16 @@ void menuLoop(void) {
       }
 
     } else if (menuPath == "6" ) {
-      //printMenu ( "5" ) ;
 
-      // I don't trust the existing methods to reboot the uC. Here, we will place the uC into a loop
-      //   which will trigger the watchdog.
       if ( inputString == "x" ) {
         menuPath = "0";
       } else if (inputString == "yes") {
         Serial.println ( "" );
         Serial.println ( "Rebooting..." ) ;
 
-        for (;;) {
-        }
-        //delay(250);
-        
-        //eepromClear();      
+        ESP.reset();
+        //for (;;) {
+        //}
       }
 
     }
