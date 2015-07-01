@@ -70,32 +70,20 @@ void handleJSONSensors () {
 void handleRoot() {
   digitalWrite ( ledHTTP, 1 );
 
-
   // TODO: Have this be configurable
 
-  //char temp[2000];
   int sec = millis() / 1000; // TODO: Revert to the previous line. This is here for debugging.
   int min = sec / 60;
   int hr = min / 60;
 
   char requestRangeValid = 0;
-
-  uint8_t digest[20];
-  uint8_t digest2[20];
-  String preDigest;
-
-  preDigest = sec;
-  preDigest += "x";
-  preDigest += String(secretRandNumber);
-
-  sha1(preDigest, &digest[0]);
-
   char digestStringHex[41];
-  char digestStringHex2[41];
 
-  for (int i = 0; i < 20; i++) {
-    sprintf(&digestStringHex[i * 2], "%02x", digest[i]);
-  }
+  computeServerDigest(sec, digestStringHex);
+
+  uint8_t digest2[20];
+
+  char digestStringHex2[41];
 
   String requestTime = server.arg("time");
 
@@ -107,30 +95,16 @@ void handleRoot() {
     // Request time + TTL must not be greater than current time
     if ((requestTime.toInt() <= sec)
         && (requestTime.toInt() >= sec - requestTTL)) {
-
       requestRangeValid = 1;
-
 
     } else {
       // Serial.println ( "** Request out of range" );
-
     }
-
-
-
   }
 
-  String preDigest2;
 
-  preDigest2 = requestTime.toInt();
-  preDigest2 += "x";
-  preDigest2 += String(secretRandNumber);
-  //preDigest2 += "Secret";
+  computeServerDigest(requestTime.toInt(), digestStringHex2);
 
-  sha1(preDigest2, &digest2[0]);
-  for (int i = 0; i < 20; i++) {
-    sprintf(&digestStringHex2[i * 2], "%02x", digest2[i]);
-  }
 
   String preDigest3 = access;
 
@@ -142,12 +116,10 @@ void handleRoot() {
     sprintf(&digestStringHex2[i * 2], "%02x", digest2[i]);
   }
 
-  //Serial.println ( digestStringHex2);
-
   if (requestRangeValid == 1 &&
       server.arg("requestPassword") == digestStringHex2) {
 
-    // Ensure that the requestTime is greater than the last successfull access time.
+    // Ensure that the requestTime is greater than the last successfully access time.
     //  This will guarentee that packets are not replayed. 
     if (requestTime.toInt() > lastAccessTime) {
       lastAccessTime = requestTime.toInt();
@@ -161,19 +133,15 @@ void handleRoot() {
 
   } else {
     if (requestRangeValid == 1) {
-      Serial.println ( "Invalid digest recieved." );
+      Serial.println ( "Invalid digest received." );
     }
   }
 
   char upTimeString[20];
 
-//  externJavascriptString.toCharArray(tempArray, 5000);
   snprintf ( upTimeString, 20, "%02d:%02d:%02d", hr, min % 60, sec % 60) ; // 00:38:47 0123456789
 
   String message = "\n\n";
-
-
-  //snprintf ( temp, 8000,
 
   message += "<html>\n";
   message += " <head>\n";
@@ -184,6 +152,7 @@ void handleRoot() {
 //  message += "  <!script src='externalScript.js'></script>\n";
   message += "  <script src='http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha1.js'></script>\n";
   message += "  <script>\n";
+
   message += "function validateForm () { \n";
   message += "  var x = document.forms['myForm']['password'].value;\n";
   message += "  if (x == null || x == '') {\n";
@@ -214,14 +183,9 @@ void handleRoot() {
   message += "</body>\n";
   message += "</html>\n";
 
-  //           requestTTL, digitalRead(sensor1), digitalRead(sensor2), sec, digestStringHex, upTimeString
-  //         );
-
   server.send ( 200, "text/html", message );
-//  server.send ( 200, "text/html", "hello" );
   digitalWrite ( ledHTTP, 0 );
 
-//  Serial.println ( ESP.getFreeHeap() );
 }
 
 void handleNotFound() {
