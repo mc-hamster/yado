@@ -67,6 +67,27 @@ void handleJSONSensors () {
   digitalWrite ( ledHTTP, 0 );
 }
 
+void handleJSONDigestNew () {
+  digitalWrite ( ledHTTP, 1 );
+
+  int sec = millis() / 1000; // TODO: Revert to the previous line. This is here for debugging.
+  char digestStringHex[41];
+
+  computeServerDigest(sec, digestStringHex);
+
+  String message = "";
+  message += "{\n";
+	  message += "  \"data\" : {\n";
+		  message += "    \"sec\" : " + String(sec) + ",\n";
+		  message += "    \"digest\" : " + String(digestStringHex) + "\n";
+	  message += "  }\n";
+  message += "}\n";
+
+  server.send ( 200, "text/plain", message );
+
+  digitalWrite ( ledHTTP, 0 );
+}
+
 void handleRoot() {
   digitalWrite ( ledHTTP, 1 );
 
@@ -106,18 +127,9 @@ void handleRoot() {
   computeServerDigest(requestTime.toInt(), digestStringHex2);
 
 
-  String preDigest3 = access;
+  boolean isPasswordValid = validatePassword ( requestTime.toInt(), server.arg("requestPassword") );
 
-  preDigest3 += digestStringHex2;
-
-  sha1(preDigest3, &digest2[0]);
-
-  for (int i = 0; i < 20; i++) {
-    sprintf(&digestStringHex2[i * 2], "%02x", digest2[i]);
-  }
-
-  if (requestRangeValid == 1 &&
-      server.arg("requestPassword") == digestStringHex2) {
+  if (requestRangeValid == 1 && isPasswordValid == true) {
 
     // Ensure that the requestTime is greater than the last successfully access time.
     //  This will guarentee that packets are not replayed. 

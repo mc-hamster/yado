@@ -1,8 +1,4 @@
-//#include <ESP8266WiFi.h>
-//#include <ESP8266WiFiMulti.h>
-//#include <WiFiClient.h>
-//#include <WiFiServer.h>
-//#include <WiFiUdp.h>
+
 
 /*
  * Copyright (c) 2015, Jm Casler
@@ -168,6 +164,7 @@ void setup ( void ) {
   server.on ( "/", handleRoot );
   server.on ( "/externalScript.js", handleExternalScriptJS );
   server.on ( "/json/sensors", handleJSONSensors );
+  server.on ( "/json/digest/new", handleJSONDigestNew );
 
   server.onNotFound ( handleNotFound );
   server.begin();
