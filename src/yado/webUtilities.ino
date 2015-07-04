@@ -47,17 +47,37 @@ boolean validatePassword ( int timeFromClient, String digestFromClient ) {
 }
 
 String readSensor ( uint8_t sensor ) {
-	if (sensor == 1) {
-		if (digitalRead(sensor1) == 1) {
-			return "Opened";
-		} else {
-			return "Closed";
+	
+	if (1) { // Invert?
+		if (sensor == 1) {
+			if (digitalRead(sensor1)) {
+				return "Closed";
+				} else {
+				return "Open";
+			}
+			} else if (sensor == 2) {
+			if (digitalRead(sensor2)) {
+				return "Closed";
+				} else {
+				return "Open";
+			}
 		}
-	} else if (sensor == 2) {
-		if (digitalRead(sensor2) == 1) {
-			return "Opened";
-			} else {
-			return "Closed";
+		
+	} else {
+		
+		if (sensor == 1) {
+			if (digitalRead(sensor1)) {
+				return "Opened";
+				} else {
+				return "Close";
+			}
+			} else if (sensor == 2) {
+			if (digitalRead(sensor2)) {
+				return "Opened";
+				} else {
+				return "Close";
+			}
 		}
 	}
+	
 }

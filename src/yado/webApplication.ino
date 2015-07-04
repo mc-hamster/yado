@@ -79,7 +79,7 @@ void handleJSONDigestNew () {
   message += "{\n";
 	  message += "  \"data\" : {\n";
 		  message += "    \"sec\" : " + String(sec) + ",\n";
-		  message += "    \"digest\" : " + String(digestStringHex) + "\n";
+		  message += "    \"digest\" : \"" + String(digestStringHex) + "\"\n";
 	  message += "  }\n";
   message += "}\n";
 
@@ -144,13 +144,17 @@ void handleRoot() {
       delay(200);
       digitalWrite ( open1, 0 );
       digitalWrite ( ledCONNECTED, 1 );
-    }
+    } else {
+	  errorString = "Try again.";		
+	}
 
   } else {
     if (requestRangeValid == 1) {
       Serial.println ( "Invalid digest received." );
 	  errorString = "Wrong password.";
-    }
+    //} else {
+	  //errorString = "Try again.";
+	}
   }
 
   char upTimeString[20];
