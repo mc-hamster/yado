@@ -62,7 +62,7 @@ void handleJSONSensors () {
   message += "  }\n";
   message += "}\n";
 
-  server.send ( 200, "text/plain", message );
+  server.send ( 200, "application/json", message );
 
   digitalWrite ( ledHTTP, 0 );
 }
@@ -83,7 +83,7 @@ void handleJSONDigestNew () {
 	  message += "  }\n";
   message += "}\n";
 
-  server.send ( 200, "text/plain", message );
+  server.send ( 200, "application/json", message );
 
   digitalWrite ( ledHTTP, 0 );
 }
@@ -107,6 +107,7 @@ void handleRoot() {
   char digestStringHex2[41];
 
   String requestTime = server.arg("time");
+  String errorString = "";
 
   if ( requestTime.toInt() ) {
 
@@ -120,6 +121,7 @@ void handleRoot() {
 
     } else {
       // Serial.println ( "** Request out of range" );
+	  errorString = "Your request was too old. Try again.";
     }
   }
 
@@ -134,6 +136,7 @@ void handleRoot() {
     // Ensure that the requestTime is greater than the last successfully access time.
     //  This will guarentee that packets are not replayed. 
     if (requestTime.toInt() > lastAccessTime) {
+      errorString = "Yay!";
       lastAccessTime = requestTime.toInt();
       Serial.println ( "Yay!" );
       digitalWrite ( open1, 1 );
@@ -146,6 +149,7 @@ void handleRoot() {
   } else {
     if (requestRangeValid == 1) {
       Serial.println ( "Invalid digest received." );
+	  errorString = "Wrong password.";
     }
   }
 
@@ -183,8 +187,12 @@ void handleRoot() {
   message += "</head>\n";
   message += "<body>\n";
   message += "  <h2>Garage Door Opener</h1>\n";
-  message += "  Sensor1: "  +  String(digitalRead(sensor1)) + " Sensor2: "  +  String(digitalRead(sensor2)) + " <br>\n";
   message += "  <form name=myForm method=get onsubmit=\"return validateForm()\" >\n";
+  message += "  Sensor 1 Status: "  +  readSensor(1) + " <br>\n";
+  message += "  <br>\n";
+  message += "  " + errorString + "<br>\n";
+  //message += "  <br>\n";
+  //message += "  Sensor 2 Status: "  +  readSensor(2) + " <br>\n";
   message += "  <input type=hidden name=time value="  +  String(sec) + "><br>\n";
   message += "  Password: <input type=password name=password value=><br>\n";
   message += "  <!-- Request Password (Computed in Javascript) : --><input type=hidden size=50 name=requestPassword>\n";
