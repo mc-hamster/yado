@@ -14,7 +14,7 @@ void computeServerDigest( int sec, char digestStringHex[] ) {
 		sprintf(&digestStringHex[i * 2], "%02x", digest[i]);
 	}
 
-}
+} 
 
 // Validates that the password entered is actually valid.
 //  TODO: Let this validate from a list of passwords rather than just one.
@@ -46,3 +46,18 @@ boolean validatePassword ( int timeFromClient, String digestFromClient ) {
 	}
 }
 
+String readSensor ( uint8_t sensor ) {
+	if (sensor == 1) {
+		if (digitalRead(sensor1) == 1) {
+			return "Opened";
+		} else {
+			return "Closed";
+		}
+	} else if (sensor == 2) {
+		if (digitalRead(sensor2) == 1) {
+			return "Opened";
+			} else {
+			return "Closed";
+		}
+	}
+}
