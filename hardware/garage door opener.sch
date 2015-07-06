@@ -9828,6 +9828,84 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 </deviceset>
 </devicesets>
 </library>
+<library name="Ava">
+<packages>
+<package name="DS1820">
+<wire x1="-0.635" y1="-0.635" x2="-0.635" y2="-2.54" width="0.127" layer="21"/>
+<wire x1="-0.635" y1="-2.54" x2="5.715" y2="-2.54" width="0.127" layer="21"/>
+<wire x1="5.715" y1="-2.54" x2="5.715" y2="0" width="0.127" layer="21"/>
+<wire x1="-0.635" y1="-0.635" x2="5.715" y2="0" width="0.127" layer="21" curve="-180"/>
+<pad name="DQ" x="2.54" y="-1.27" drill="0.8"/>
+<pad name="GND" x="0.635" y="-1.27" drill="0.8"/>
+<pad name="VDD" x="4.445" y="-1.27" drill="0.8"/>
+<text x="0" y="0" size="1.016" layer="21">DS1820</text>
+</package>
+<package name="DS18B20_SOIC">
+<wire x1="2.362" y1="-1.803" x2="2.362" y2="1.803" width="0.1524" layer="21"/>
+<wire x1="-2.362" y1="1.803" x2="-2.362" y2="-1.803" width="0.1524" layer="21"/>
+<circle x="-1.8034" y="-0.9906" radius="0.1436" width="0.2032" layer="21"/>
+<smd name="NC" x="-1.905" y="-2.6162" dx="0.6096" dy="2.2098" layer="1"/>
+<smd name="NC2" x="-0.635" y="-2.6162" dx="0.6096" dy="2.2098" layer="1"/>
+<smd name="VCC" x="0.635" y="-2.6162" dx="0.6096" dy="2.2098" layer="1"/>
+<smd name="DQ" x="1.905" y="-2.6162" dx="0.6096" dy="2.2098" layer="1"/>
+<smd name="GND" x="1.905" y="2.6162" dx="0.6096" dy="2.2098" layer="1"/>
+<smd name="NC5" x="0.635" y="2.6162" dx="0.6096" dy="2.2098" layer="1"/>
+<smd name="NC4" x="-0.635" y="2.6162" dx="0.6096" dy="2.2098" layer="1"/>
+<smd name="NC3" x="-1.905" y="2.6162" dx="0.6096" dy="2.2098" layer="1"/>
+<text x="-1.27" y="-0.635" size="0.4064" layer="27">&gt;VALUE</text>
+<text x="-1.27" y="0" size="0.4064" layer="25">&gt;NAME</text>
+</package>
+</packages>
+<symbols>
+<symbol name="DS1820">
+<wire x1="-5.08" y1="0" x2="5.08" y2="0" width="0.254" layer="94"/>
+<wire x1="5.08" y1="0" x2="5.08" y2="5.08" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="5.08" x2="-5.08" y2="0" width="0.254" layer="94"/>
+<wire x1="5.08" y1="5.08" x2="-5.08" y2="5.08" width="0.254" layer="94" curve="180"/>
+<text x="-11.938" y="10.668" size="1.27" layer="95"></text>
+<text x="-3.048" y="0.508" size="1.27" layer="95">DS18B20</text>
+<pin name="GND" x="-2.54" y="-5.08" visible="pin" length="middle" direction="pwr" rot="R90"/>
+<pin name="DQ" x="0" y="-5.08" visible="pin" length="middle" rot="R90"/>
+<pin name="VCC" x="2.54" y="-5.08" visible="pin" length="middle" direction="pwr" rot="R90"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="DS1820">
+<description>DS18B20
+Programmable Resolution 1-Wire Digital Thermometer
+
+Description
+The DS18B20 digital thermometer provides 9-bit to 12-bit Celsius temperature measurements and has an alarm function with nonvolatile user-programmable upper and lower trigger points. The DS18B20 communicates over a 1-Wire® bus that by definition requires only one data line (and ground) for communication with a central microprocessor. It has an operating temperature range of -55°C to +125°C and is accurate to ±0.5°C over the range of -10°C to +85°C. In addition, the DS18B20 can derive power directly from the data line ("parasite power"), eliminating the need for an external power supply.
+
+Each DS18B20 has a unique 64-bit serial code, which allows multiple DS18B20s to function on the same 1-Wire bus. Thus, it is simple to use one microprocessor to control many DS18B20s distributed over a large area. Applications that can benefit from this feature include HVAC environmental controls, temperature monitoring systems inside buildings, equipment, or machinery, and process monitoring and control systems.</description>
+<gates>
+<gate name="G$1" symbol="DS1820" x="7.62" y="15.24"/>
+</gates>
+<devices>
+<device name="TO92" package="DS1820">
+<connects>
+<connect gate="G$1" pin="DQ" pad="DQ"/>
+<connect gate="G$1" pin="GND" pad="GND"/>
+<connect gate="G$1" pin="VCC" pad="VDD"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="SOIC" package="DS18B20_SOIC">
+<connects>
+<connect gate="G$1" pin="DQ" pad="DQ"/>
+<connect gate="G$1" pin="GND" pad="GND"/>
+<connect gate="G$1" pin="VCC" pad="VCC"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -9894,6 +9972,9 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <part name="GND7" library="supply1" deviceset="GND" device=""/>
 <part name="D3" library="SparkFun-LED" deviceset="LED" device="0603"/>
 <part name="D4" library="SparkFun-LED" deviceset="LED" device="0603"/>
+<part name="DS18B20" library="Ava" deviceset="DS1820" device="TO92" value="DS18B20TO92"/>
+<part name="+3V5" library="supply1" deviceset="+3V3" device=""/>
+<part name="R9" library="resistor" deviceset="R-US_" device="R0603" value="4k"/>
 </parts>
 <sheets>
 <sheet>
@@ -9902,6 +9983,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <text x="101.6" y="50.8" size="1.778" layer="95">GPIO04</text>
 <text x="101.6" y="38.1" size="1.778" layer="95">GPIO014</text>
 <text x="101.6" y="35.56" size="1.778" layer="95">GPIO012</text>
+<text x="101.6" y="33.02" size="1.778" layer="95">GPIO013</text>
 </plain>
 <instances>
 <instance part="T1" gate="G$1" x="149.86" y="101.6">
@@ -9958,6 +10040,9 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <instance part="GND7" gate="1" x="144.78" y="7.62"/>
 <instance part="D3" gate="G$1" x="78.74" y="45.72"/>
 <instance part="D4" gate="G$1" x="83.82" y="40.64"/>
+<instance part="DS18B20" gate="G$1" x="91.44" y="101.6"/>
+<instance part="+3V5" gate="G$1" x="101.6" y="101.6"/>
+<instance part="R9" gate="G$1" x="93.98" y="88.9" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -10128,6 +10213,15 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <pinref part="R3" gate="G$1" pin="1"/>
 <pinref part="+3V4" gate="G$1" pin="+3V3"/>
 <wire x1="160.02" y1="27.94" x2="157.48" y2="30.48" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="DS18B20" gate="G$1" pin="VCC"/>
+<wire x1="93.98" y1="96.52" x2="93.98" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="93.98" y1="93.98" x2="101.6" y2="93.98" width="0.1524" layer="91"/>
+<pinref part="+3V5" gate="G$1" pin="+3V3"/>
+<wire x1="101.6" y1="93.98" x2="101.6" y2="99.06" width="0.1524" layer="91"/>
+<pinref part="R9" gate="G$1" pin="2"/>
+<junction x="93.98" y="93.98"/>
 </segment>
 </net>
 <net name="+5V" class="0">
@@ -10319,6 +10413,22 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <pinref part="R5" gate="G$1" pin="1"/>
 <wire x1="91.44" y1="48.26" x2="78.74" y2="48.26" width="0.1524" layer="91"/>
 <pinref part="D3" gate="G$1" pin="A"/>
+</segment>
+</net>
+<net name="N$30" class="0">
+<segment>
+<pinref part="DS18B20" gate="G$1" pin="DQ"/>
+<wire x1="91.44" y1="96.52" x2="91.44" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="91.44" y1="81.28" x2="93.98" y2="81.28" width="0.1524" layer="91"/>
+<pinref part="R9" gate="G$1" pin="1"/>
+<wire x1="93.98" y1="81.28" x2="93.98" y2="83.82" width="0.1524" layer="91"/>
+<pinref part="JP3" gate="A" pin="10"/>
+<wire x1="116.84" y1="33.02" x2="121.92" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="121.92" y1="33.02" x2="124.46" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="124.46" y1="35.56" x2="124.46" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="124.46" y1="71.12" x2="114.3" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="114.3" y1="81.28" x2="93.98" y2="81.28" width="0.1524" layer="91"/>
+<junction x="93.98" y="81.28"/>
 </segment>
 </net>
 </nets>
