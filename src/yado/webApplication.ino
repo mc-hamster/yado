@@ -147,7 +147,7 @@ void handleRoot() {
 			  delay(200);
 			  digitalWrite ( open1, 0 );
 			  digitalWrite ( ledCONNECTED, 1 );
-			  } else {
+		  } else {
 			  errorString = "Try again.";
 		  }
 

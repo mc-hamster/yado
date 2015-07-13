@@ -20,31 +20,35 @@ void computeServerDigest( int sec, char digestStringHex[] ) {
 //  TODO: Let this validate from a list of passwords rather than just one.
 boolean validatePassword ( int timeFromClient, String digestFromClient ) {
 
-	char serverDigestHex[41];       // Without secret
-	uint8_t serverDigestSecret[20]; // With secret
-	char serverDigestSecretHex[41]; // With secret
-
-	String preDigest = "";
-
-	computeServerDigest(timeFromClient, serverDigestHex);
-
-
-	preDigest = settings.accessGeneral[0].password;
-	preDigest += serverDigestHex;
+	for (int accountObj = 0; accountObj < numberOfUsers; accountObj++) {
 	
-	sha1(preDigest, &serverDigestSecret[0]);
+		char serverDigestHex[41];       // Without secret
+		uint8_t serverDigestSecret[20]; // With secret
+		char serverDigestSecretHex[41]; // With secret
+
+		String preDigest = "";
+
+		computeServerDigest(timeFromClient, serverDigestHex);
+
+
+		preDigest = settings.accessGeneral[accountObj].password;
+		preDigest += serverDigestHex;
+	
+		sha1(preDigest, &serverDigestSecret[0]);
 	
 	
-	// Convert array of decimal into array of ascii hex values
-	for (int i = 0; i < 20; i++) {
-		sprintf(&serverDigestSecretHex[i * 2], "%02x", serverDigestSecret[i]);
+		// Convert array of decimal into array of ascii hex values
+		for (int i = 0; i < 20; i++) {
+			sprintf(&serverDigestSecretHex[i * 2], "%02x", serverDigestSecret[i]);
+		}
+
+		if (String(serverDigestSecretHex) == digestFromClient) {
+			return true;
+		}
+	
 	}
-
-	if (String(serverDigestSecretHex) == digestFromClient) {
-		return true;
-	} else {
-	    return false;
-	}
+	return false;
+	
 }
 
 String readSensor ( uint8_t sensor ) {
