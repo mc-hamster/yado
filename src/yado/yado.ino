@@ -166,6 +166,7 @@ void setup ( void ) {
   server.on ( "/externalScript.js", handleExternalScriptJS );
   server.on ( "/json/sensors", handleJSONSensors );
   server.on ( "/json/digest/new", handleJSONDigestNew );
+  server.on ( "/handleBigResponse", handleBigResponse );
 
   server.onNotFound ( handleNotFound );
   server.begin();
