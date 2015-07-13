@@ -42,29 +42,30 @@
 
 // Configuration Start
 
-const char* ssid = "";
-const char* password = "";
+const uint8_t numberOfUsers = 5;
+const uint8_t passwordLength = 16;
 
+struct access_t
+{
+	uint8_t admin;
+	uint8_t conf;
+	char password[passwordLength + 1]; // One more byte than required; String needs to be null terminated
+	char user[passwordLength + 1];  // One more byte than required; String needs to be null terminated
+	char note[passwordLength + 1];  // One more byte than required; String needs to be null terminated
+};
+
+// This structure should not grow larger than 512 bytes. If so, the size of the eeprom on the
+//   esp8266 will need to be expanded.
 struct settings_t
 {
-  char ssid[32];
-  char ssidPassword[64];
-  char accessAdmin[16];
-  char accessGeneral[16];
-  uint8_t ipMode; // 0 = Dynamic, 1 = Static
-  uint8_t ipAddress[4]; // 255.255.255.255
-  uint8_t ipGateway[4]; // 255.255.255.255
-  uint8_t ipSubnet[4]; // 255.255.255.255
+	char ssid[33];         // One more byte than required; String needs to be null terminated
+	char ssidPassword[65]; // One more byte than required; String needs to be null terminated
+	access_t accessGeneral[numberOfUsers];
+	uint8_t ipMode; // 0 = Dynamic, 1 = Static
+	uint8_t ipAddress[4]; // 255.255.255.255
+	uint8_t ipGateway[4]; // 255.255.255.255
+	uint8_t ipSubnet[4];  // 255.255.255.255
 } settings;
-
-char access[64];
-
-// the IP address for the shield:
-IPAddress ipAddress(0, 0, 0, 0);
-IPAddress ipGateway(0, 0, 0, 0);
-IPAddress ipSubnet(0, 0, 0, 0);
-
-boolean useDHCP = false;  // If false, use manual IP address (above)
 
 
 int requestTTL = 60;
@@ -82,7 +83,7 @@ const int sensor2 = 12;
 const int open1 = 5;
 const int open2 = 4;
 
-// These buttons are exponsed on the nodemcu dev board
+// These buttons are exposed on the nodemcu dev board
 const int key_user = 16; // TODO: On startup, if this button is pressed -- broadcast an AP
 const int key_flash = 0; 
 // End Pin Assignment
@@ -100,7 +101,7 @@ boolean stringComplete = false;  // whether the string is complete
 
 
 void setup ( void ) {
-  EEPROM.begin(512); // 512 bytes should be more than enough (famous last words)
+  //EEPROM.begin(512); // 512 bytes should be more than enough (famous last words)
   loadSettings();
 
   inputString.reserve(50);
@@ -126,20 +127,20 @@ void setup ( void ) {
   Serial.begin ( 115200 );
 
   // Read settings from EEPROM;
-  EEPROM_readAnything(0, settings);
+  //EEPROM_readAnything(0, settings);
 
 
 
-  WiFi.begin ( ssid, password );
+  WiFi.begin ( settings.ssid, settings.ssidPassword );
 
   // Documentation says this is supposed to come before WiFi.begin, but when it is there -- it doesn't work. WHY?!?!?!
-  if (!useDHCP) { // If true, use manual IP address
-    WiFi.config ( ipAddress, ipGateway, ipSubnet) ;
+  if (settings.ipMode == 0) { // 0 = Dynamic, 1 = Static
+    WiFi.config ( settings.ipAddress, settings.ipGateway, settings.ipSubnet) ;
   }
   
   Serial.println ( "" );
 
-  EEPROM_readAnything(0, settings);
+  //EEPROM_readAnything(0, settings);
 
   // Wait for connection
   while ( WiFi.status() != WL_CONNECTED ) {
@@ -169,6 +170,7 @@ void setup ( void ) {
   server.onNotFound ( handleNotFound );
   server.begin();
   Serial.println ( "HTTP server started" );
+  
 }
 
 
@@ -176,6 +178,8 @@ void loop ( void ) {
   server.handleClient();
 
   menuLoop() ;
+
+//  Serial.println ( settings.accessGeneral[0] );
 
 }
 

@@ -28,7 +28,8 @@ boolean validatePassword ( int timeFromClient, String digestFromClient ) {
 
 	computeServerDigest(timeFromClient, serverDigestHex);
 
-	preDigest = access;
+
+	preDigest = settings.accessGeneral[0].password;
 	preDigest += serverDigestHex;
 	
 	sha1(preDigest, &serverDigestSecret[0]);
