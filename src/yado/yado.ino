@@ -134,7 +134,7 @@ void setup ( void ) {
   WiFi.begin ( settings.ssid, settings.ssidPassword );
 
   // Documentation says this is supposed to come before WiFi.begin, but when it is there -- it doesn't work. WHY?!?!?!
-  if (settings.ipMode == 0) { // 0 = Dynamic, 1 = Static
+  if (settings.ipMode == 1) { // 0 = Dynamic, 1 = Static
     WiFi.config ( settings.ipAddress, settings.ipGateway, settings.ipSubnet) ;
   }
   
