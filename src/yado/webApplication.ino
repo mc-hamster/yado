@@ -190,7 +190,7 @@ void handleRoot() {
   message += "  </style>\n";
   message += "</head>\n";
   message += "<body>\n";
-  message += "  <h2>Garage Door Opener</h1>\n";
+  message += "  <h2><a href=/>Garage Door Opener</a></h1>\n";
   message += "  <form name=myForm method=get onsubmit=\"return validateForm()\" >\n";
   message += "  Sensor 1 Status: "  +  readSensor(1) + " <br>\n";
   message += "  <br>\n";
