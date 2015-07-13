@@ -129,32 +129,36 @@ void handleRoot() {
   computeServerDigest(requestTime.toInt(), digestStringHex2);
 
 
-  boolean isPasswordValid = validatePassword ( requestTime.toInt(), server.arg("requestPassword") );
+  // Only do something if the password is provided.
+  if ( server.arg("requestPassword") != "") {
+	  
+	  boolean isPasswordValid = validatePassword ( requestTime.toInt(), server.arg("requestPassword") );
 
-  if (requestRangeValid == 1 && isPasswordValid == true) {
+	  if (requestRangeValid == 1 && isPasswordValid == true) {
 
-    // Ensure that the requestTime is greater than the last successfully access time.
-    //  This will guarentee that packets are not replayed. 
-    if (requestTime.toInt() > lastAccessTime) {
-      errorString = "Yay!";
-      lastAccessTime = requestTime.toInt();
-      Serial.println ( "Yay!" );
-      digitalWrite ( open1, 1 );
-      digitalWrite ( ledCONNECTED, 0 );
-      delay(200);
-      digitalWrite ( open1, 0 );
-      digitalWrite ( ledCONNECTED, 1 );
-    } else {
-	  errorString = "Try again.";		
-	}
+		  // Ensure that the requestTime is greater than the last successfully access time.
+		  //  This will guarentee that packets are not replayed.
+		  if (requestTime.toInt() > lastAccessTime) {
+			  errorString = "Yay!";
+			  lastAccessTime = requestTime.toInt();
+			  Serial.println ( "Yay!" );
+			  digitalWrite ( open1, 1 );
+			  digitalWrite ( ledCONNECTED, 0 );
+			  delay(200);
+			  digitalWrite ( open1, 0 );
+			  digitalWrite ( ledCONNECTED, 1 );
+			  } else {
+			  errorString = "Try again.";
+		  }
 
-  } else {
-    if (requestRangeValid == 1) {
-      Serial.println ( "Invalid digest received." );
-	  errorString = "Wrong password.";
-    //} else {
-	  //errorString = "Try again.";
-	}
+		  } else {
+		  if (requestRangeValid == 1) {
+			  Serial.println ( "Invalid digest received." );
+			  errorString = "Wrong password.";
+			  //} else {
+			  //errorString = "Try again.";
+		  }
+	  }
   }
 
   char upTimeString[20];
