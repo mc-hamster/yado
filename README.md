@@ -4,10 +4,13 @@
 ## Features
 
 1. Open hardware available in ./hardware
- 1. PCB available for purchase at OSHPark: TBD
- 2. Full BOM available with distributor list: TBD (See BOM in ./hardware for part list)
+ 1. PCB available for purchase at OSHPark
+  1. https://www.oshpark.com/shared_projects/0cBHd21f
+ 2. Full BOM available with distributor list.
+  1. (See BOM in ./hardware for part list)
  3. Utilizes nodemcu dev board (It's minimal and just $10 on ebay)
- 4. Supports both v0.9 and v1.0 nodemcu footprints.
+ 4. Supports both v0.9 and v1.0 nodemcu footprints. 
+  1. http://www.aliexpress.com/wholesale?shipCountry=us&shipFromCountry=&shipCompanies=&SearchText=nodemcu&exception=&minPrice=&maxPrice=&minQuantity=&maxQuantity=&isFreeShip=n&isFavorite=n&isRtl=yes&isOnSale=n&isBigSale=n&similar_style=n&similar_style_id=&isAtmOnline=n&CatId=0&g=y&SortType=total_tranpro_desc&initiative_id=SB_20150717073819&isPremium=y&filterCat=400103%2C515%2C4099&needQuery=n&groupsort=1
 1. Open source code available in ./src.
 2. Completed Features:
  1. Digest based authentication (No clear text passwords) ... Done
@@ -33,7 +36,9 @@
 
 1. Install Arduino IDE (It's a horrible environment, but easiest to get going): http://arduino.cc
 2. Install board support for the ESP8266: https://github.com/esp8266/Arduino
-3. Install CH341 USB to TTL Bridge Drivers: http://www.electrodragon.com/w/CH341
+3. Install  USB to TTL Bridge Drivers
+ 1. CH341 : http://www.electrodragon.com/w/CH341 (older nodemcu)
+ 2. CP2102 : .... (newer nodemcu)
 4. Load the Yagdo code into the Arduino IDE
 5. Change the settings in the "defaults" section of the YADO source code.
 6. Compile and load the code into your nodemcu dev board. (Select the esp8266 from the boards menu).
@@ -52,5 +57,7 @@
  1. SSID: yado_admin
  2. Password: yado_admin
 6. Point your browser to http://192.168.4.1
+
+LED2 will continue to blink while Yado is in admin mode.
 
 Important Note: You will have 30 minutes to make your changes. After 30 minutes, Yado will return to the default operation.
