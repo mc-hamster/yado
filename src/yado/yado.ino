@@ -43,24 +43,24 @@ const uint8_t passwordLength = 16;
 
 struct access_t
 {
-	uint8_t admin;
-	uint8_t conf;
-	char password[passwordLength + 1]; // One more byte than required; String needs to be null terminated
-	char user[passwordLength + 1];  // One more byte than required; String needs to be null terminated
-	char note[passwordLength + 1];  // One more byte than required; String needs to be null terminated
+  uint8_t admin;
+  uint8_t conf;
+  char password[passwordLength + 1]; // One more byte than required; String needs to be null terminated
+  char user[passwordLength + 1];  // One more byte than required; String needs to be null terminated
+  char note[passwordLength + 1];  // One more byte than required; String needs to be null terminated
 };
 
 // This structure should not grow larger than 512 bytes. If so, the size of the eeprom on the
 //   esp8266 will need to be expanded.
 struct settings_t
 {
-	char ssid[33];         // One more byte than required; String needs to be null terminated
-	char ssidPassword[65]; // One more byte than required; String needs to be null terminated
-	access_t accessGeneral[numberOfUsers];
-	uint8_t ipMode; // 0 = Dynamic, 1 = Static
-	uint8_t ipAddress[4]; // 255.255.255.255
-	uint8_t ipGateway[4]; // 255.255.255.255
-	uint8_t ipSubnet[4];  // 255.255.255.255
+  char ssid[33];         // One more byte than required; String needs to be null terminated
+  char ssidPassword[65]; // One more byte than required; String needs to be null terminated
+  access_t accessGeneral[numberOfUsers];
+  uint8_t ipMode; // 0 = Dynamic, 1 = Static
+  uint8_t ipAddress[4]; // 255.255.255.255
+  uint8_t ipGateway[4]; // 255.255.255.255
+  uint8_t ipSubnet[4];  // 255.255.255.255
 } settings;
 
 
@@ -74,14 +74,14 @@ ESP8266WebServer server ( 80 );
 // Pin Assignment
 const int ledHTTP = 0;     // Toggled on HTTP Status
 const int ledCONNECTED = 2; // Toggled on when AP connected
-const int sensor1 = 14; 
+const int sensor1 = 14;
 const int sensor2 = 12;
 const int open1 = 5;
 const int open2 = 4;
 
 // These buttons are exposed on the nodemcu dev board
 const int key_user = 16; // TODO: On startup, if this button is pressed -- broadcast an AP
-const int key_flash = 0; 
+const int key_flash = 0;
 // End Pin Assignment
 
 unsigned long secretRandNumber; // We will generate a new secret on startup.
@@ -117,9 +117,9 @@ void setup ( void ) {
 
 
   //  There is a bug in the esp8266 library which prevents the pulldown from functioning
-  //    https://github.com/esp8266/Arduino/issues/478 
+  //    https://github.com/esp8266/Arduino/issues/478
   pinMode ( sensor1, INPUT );
-  pinMode ( sensor2, INPUT );  
+  pinMode ( sensor2, INPUT );
 
   // Set status LEDs to OUTPUT
   pinMode ( ledHTTP, OUTPUT );
@@ -129,17 +129,17 @@ void setup ( void ) {
 
   // Get access to the key_user button
   pinMode( key_flash, INPUT_PULLUP );
-  
-  
+
+
   delay(5000);
   // Set deviceAdmin to one if key_flash is depressed. Otherwise, use defaults.
   if (digitalRead( key_flash ) == 0) {
-	  deviceAdmin = 1;
-	  pinMode( key_flash, OUTPUT );
+    deviceAdmin = 1;
+    pinMode( key_flash, OUTPUT );
   } else {
-	  pinMode( key_flash, OUTPUT );
-  }  
-  
+    pinMode( key_flash, OUTPUT );
+  }
+
   Serial.begin ( 115200 );
 
   // Read settings from EEPROM;
@@ -147,106 +147,104 @@ void setup ( void ) {
 
 
   if (deviceAdmin) {
-	  //delay(2000); 
-	  WiFi.mode(WIFI_AP);
-	  WiFi.softAP("yado_admin", "yado_admin");
-	  WiFi.mode(WIFI_AP);
-	  
-	  //WiFi.printDiag(Serial);
+    //delay(2000);
+    WiFi.mode(WIFI_AP);
+    WiFi.softAP("yado_admin", "yado_admin");
+    WiFi.mode(WIFI_AP);
 
-	  Serial.print ( "IP address: " );
-	  Serial.println ( WiFi.softAPIP() );
-	  printAPMacAddress();
+    //WiFi.printDiag(Serial);
 
-	  // We are using the amount of time required to connect to the AP as the seed to a random number generator.
-	  //   We should look for other ways to improve the seed. This should be "good enough" for now.
-	  randomSeed(micros());
-	  secretRandNumber = random(2147483646); // Full range of long 2147483647
-	  Serial.println("Secret: " + String(secretRandNumber));
+    Serial.print ( "IP address: " );
+    Serial.println ( WiFi.softAPIP() );
+    printAPMacAddress();
 
-	  server.on ( "/", handleAdminRoot );
-	  server.on ( "/externalScript.js", handleExternalScriptJS );
-	  server.on ( "/json/sensors", handleJSONSensors );
-	  server.on ( "/json/digest/new", handleJSONDigestNew );
-	  server.on ( "/handleBigResponse", handleBigResponse );
+    // We are using the amount of time required to connect to the AP as the seed to a random number generator.
+    //   We should look for other ways to improve the seed. This should be "good enough" for now.
 
-	  server.onNotFound ( handleNotFound );
-	  server.begin();
-	  Serial.println ( "HTTP server started" );
+    server.on ( "/", handleAdminRoot );
+    server.on ( "/conf/display", handleAdminConfDisplay );
+    server.on ( "/conf/wifi", handleAdminConfWifi );
+    server.on ( "/conf/accounts", handleAdminConfAccounts );
+    server.on ( "/conf/sensors", handleAdminConfSensors );
+    server.on ( "/restart", handleAdminRestart);
+
+    server.onNotFound ( handleNotFound );
+    server.begin();
+    Serial.println ( "HTTP server started" );
 
   } else {
-	  WiFi.begin ( settings.ssid, settings.ssidPassword );
-	  WiFi.mode ( WIFI_STA );
+    WiFi.begin ( settings.ssid, settings.ssidPassword );
+    WiFi.mode ( WIFI_STA );
 
-	  // Documentation says this is supposed to come before WiFi.begin, but when it is there -- it doesn't work. WHY?!?!?!
-	  if (settings.ipMode == 1) { // 0 = Dynamic, 1 = Static
-		WiFi.config ( settings.ipAddress, settings.ipGateway, settings.ipSubnet) ;
-	  }
-  
-	  Serial.println ( "" );
+    // Documentation says this is supposed to come before WiFi.begin, but when it is there -- it doesn't work. WHY?!?!?!
+    if (settings.ipMode == 1) { // 0 = Dynamic, 1 = Static
+      WiFi.config ( settings.ipAddress, settings.ipGateway, settings.ipSubnet) ;
+    }
 
-	  //EEPROM_readAnything(0, settings);
+    Serial.println ( "" );
 
-	  // Wait for connection
-	  while ( WiFi.status() != WL_CONNECTED ) {
-		delay ( 500 );
-		Serial.print ( "." );
-	  }
-  
-	  digitalWrite ( ledCONNECTED, 1 );
+    //EEPROM_readAnything(0, settings);
 
-	  WiFi.printDiag(Serial);
+    // Wait for connection
+    while ( WiFi.status() != WL_CONNECTED ) {
+      delay ( 500 );
+      Serial.print ( "." );
+    }
 
-	  Serial.print ( "IP address: " );
-	  Serial.println ( WiFi.localIP() );
-	  printMacAddress();
+    digitalWrite ( ledCONNECTED, 1 );
 
-	  // We are using the amount of time required to connect to the AP as the seed to a random number generator.
-	  //   We should look for other ways to improve the seed. This should be "good enough" for now.
-	  randomSeed(micros());
-	  secretRandNumber = random(2147483646); // Full range of long 2147483647
-	  Serial.println("Secret: " + String(secretRandNumber));
+    WiFi.printDiag(Serial);
 
-	  server.on ( "/", handleRoot );
-	  server.on ( "/externalScript.js", handleExternalScriptJS );
-	  server.on ( "/json/sensors", handleJSONSensors );
-	  server.on ( "/json/digest/new", handleJSONDigestNew );
-	  server.on ( "/handleBigResponse", handleBigResponse );
+    Serial.print ( "IP address: " );
+    Serial.println ( WiFi.localIP() );
+    printMacAddress();
 
-	  server.onNotFound ( handleNotFound );
-	  server.begin();
-	  Serial.println ( "HTTP server started" );
+    // We are using the amount of time required to connect to the AP as the seed to a random number generator.
+    //   We should look for other ways to improve the seed. This should be "good enough" for now.
+    randomSeed(micros());
+    secretRandNumber = random(2147483646); // Full range of long 2147483647
+    Serial.println("Secret: " + String(secretRandNumber));
+
+    server.on ( "/", handleRoot );
+    server.on ( "/externalScript.js", handleExternalScriptJS );
+    server.on ( "/json/sensors", handleJSONSensors );
+    server.on ( "/json/digest/new", handleJSONDigestNew );
+    server.on ( "/handleBigResponse", handleBigResponse );
+
+    server.onNotFound ( handleNotFound );
+    server.begin();
+    Serial.println ( "HTTP server started" );
   }
-  
+
 }
 
 
 void loop ( void ) {
-	
+
   server.handleClient();
 
   //menuLoop() ;
 
   if (deviceAdmin) {
-	  unsigned long ledHTTPCurrentMills = millis();
+    unsigned long ledHTTPCurrentMills = millis();
 
-	  if (ledHTTPCurrentMills - ledHTTPStateMills > ledHTTPStateInterval) {
-		  ledHTTPStateMills = ledHTTPCurrentMills;
-		  
-		  if (ledHTTPState) {
-			  ledHTTPState = 0;
-		  } else {
-			  ledHTTPState = 1;
-		  }
-		  digitalWrite( ledCONNECTED, ledHTTPState );
-		  //Serial.println ( WiFi.softAPIP() );
-	  }
-	  
-	  // If we've been in admin mode for 30 minutes, reboot ESP to get out of
-	  //   admin mode.
-	  if (millis() > 1800000) {
-		ESP.reset();
-	  }
+    if (ledHTTPCurrentMills - ledHTTPStateMills > ledHTTPStateInterval) {
+      ledHTTPStateMills = ledHTTPCurrentMills;
+
+      if (ledHTTPState) {
+        ledHTTPState = 0;
+      } else {
+        ledHTTPState = 1;
+      }
+      digitalWrite( ledCONNECTED, ledHTTPState );
+      //Serial.println ( WiFi.softAPIP() );
+    }
+
+    // If we've been in admin mode for 30 minutes, reboot ESP to get out of
+    //   admin mode.
+    if (millis() > 1800000) {
+      ESP.reset();
+    }
   }
 
 }
