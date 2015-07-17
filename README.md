@@ -29,11 +29,28 @@
 2. /json/digest/new
  1. Generate a new server digest and associated time
 
-## To build code:
+## To build code
 
-1. Install Arduino IDE (It's a horrible environment, but the best for ESP8266): http://arduino.cc
+1. Install Arduino IDE (It's a horrible environment, but easiest to get going): http://arduino.cc
 2. Install board support for the ESP8266: https://github.com/esp8266/Arduino
 3. Install CH341 USB to TTL Bridge Drivers: http://www.electrodragon.com/w/CH341
 4. Load the Yagdo code into the Arduino IDE
-5. Change the settings in the "Settings" section of the YADO source code.
-6. Compile and load the code into your nodemcu dev board.
+5. Change the settings in the "defaults" section of the YADO source code.
+6. Compile and load the code into your nodemcu dev board. (Select the esp8266 from the boards menu).
+
+###
+
+1. Install Atmel Studio and Visual Micro. This is a better IDE than the Arduino IDE.
+
+## To access admin interface (work in progress)
+
+1. Provide power to Yado
+2. The LED1 will light solid. During this period, hold down the "user_flash" button.
+3. Onces you press the button, LED1 will turn off.
+4. Within 5 seconds, LED2 will start blinking. Let go of "user_flash".
+5. Connect to the Yado access point.
+ 1. SSID: yado_admin
+ 2. Password: yado_admin
+6. Point your browser to http://192.168.4.1
+
+Important Note: You will have 30 minutes to make your changes. After 30 minutes, Yado will return to the default operation.
