@@ -241,6 +241,12 @@ void loop ( void ) {
 		  digitalWrite( ledCONNECTED, ledHTTPState );
 		  //Serial.println ( WiFi.softAPIP() );
 	  }
+	  
+	  // If we've been in admin mode for 30 minutes, reboot ESP to get out of
+	  //   admin mode.
+	  if (millis() > 1800000) {
+		ESP.reset();
+	  }
   }
 
 }
