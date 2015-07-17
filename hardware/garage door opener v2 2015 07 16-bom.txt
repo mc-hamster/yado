@@ -1,0 +1,30 @@
+Partlist exported from /Users/jmcasler/Documents/CloudStation/projects/yado/hardware/garage door opener v2 2015 07 16.sch at 7/17/15 12:47 AM
+
+Part    Value       Device                    Package   Description                MF     MPN         OC_FARNELL OC_NEWARK
+C1      10uf        C-USC0603                 C0603     CAPACITOR, American symbol                                        
+C2      10uf        C-USC0603                 C0603     CAPACITOR, American symbol                                        
+D1      1N4004      DIODE-DO214BA             DO214BA   DIODE                                                             
+D2      1N4004      DIODE-DO214BA             DO214BA   DIODE                                                             
+D3                  LED0603                   LED-0603  LEDs                                                              
+D4                  LED0603                   LED-0603  LEDs                                                              
+DS18B20 DS18B20TO92 DS1820TO92                DS1820    DS18B20                                                           
+JP1                 PINHD-1X15                1X15      PIN HEADER                                                        
+JP2                 PINHD-1X15                1X15      PIN HEADER                                                        
+JP3                 PINHD-1X15                1X15      PIN HEADER                                                        
+K1      HE3621      HE3621                    HE3621    RELAY                      HAMLIN HE3621A0510 9561943    50F7993  
+K2      HE3621      HE3621                    HE3621    RELAY                      HAMLIN HE3621A0510 9561943    50F7993  
+OPEN1   1X2-3.5MM   1X2-3.5MM                 1X2-3.5MM 3.5mm Terminal block              OSTTE020161                     
+OPEN2   1X2-3.5MM   1X2-3.5MM                 1X2-3.5MM 3.5mm Terminal block              OSTTE020161                     
+R1      42          R-US_R0603                R0603     RESISTOR, American symbol                                         
+R2      3.3k        R-US_R0603                R0603     RESISTOR, American symbol                                         
+R3      42          R-US_R0603                R0603     RESISTOR, American symbol                                         
+R4      3.3k        R-US_R0603                R0603     RESISTOR, American symbol                                         
+R5      3.3k        R-US_R0603                R0603     RESISTOR, American symbol                                         
+R6      3.3k        R-US_R0603                R0603     RESISTOR, American symbol                                         
+R7      3.3k        R-US_R0603                R0603     RESISTOR, American symbol                                         
+R8      3.3k        R-US_R0603                R0603     RESISTOR, American symbol                                         
+R9      3.3k        R-US_R0603                R0603     RESISTOR, American symbol                                         
+SENS1   1X2-3.5MM   1X2-3.5MM                 1X2-3.5MM 3.5mm Terminal block              OSTTE020161                     
+SENS2   1X2-3.5MM   1X2-3.5MM                 1X2-3.5MM 3.5mm Terminal block              OSTTE020161                     
+T1                  MMBT3904LT1-NPN-SOT23-BEC SOT23-BEC NPN Transistror                   MMBT2222A                       
+T2                  MMBT3904LT1-NPN-SOT23-BEC SOT23-BEC NPN Transistror                   MMBT2222A                       
