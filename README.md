@@ -10,7 +10,7 @@
   1. (See BOM in ./hardware for part list)
  3. Utilizes nodemcu dev board (It's minimal and just $10 on ebay)
  4. Supports both v0.9 and v1.0 nodemcu footprints. 
-  1. http://www.aliexpress.com/wholesale?shipCountry=us&shipFromCountry=&shipCompanies=&SearchText=nodemcu&exception=&minPrice=&maxPrice=&minQuantity=&maxQuantity=&isFreeShip=n&isFavorite=n&isRtl=yes&isOnSale=n&isBigSale=n&similar_style=n&similar_style_id=&isAtmOnline=n&CatId=0&g=y&SortType=total_tranpro_desc&initiative_id=SB_20150717073819&isPremium=y&filterCat=400103%2C515%2C4099&needQuery=n&groupsort=1
+   1. http://www.aliexpress.com/wholesale?shipCountry=us&shipFromCountry=&shipCompanies=&SearchText=nodemcu&exception=&minPrice=&maxPrice=&minQuantity=&maxQuantity=&isFreeShip=n&isFavorite=n&isRtl=yes&isOnSale=n&isBigSale=n&similar_style=n&similar_style_id=&isAtmOnline=n&CatId=0&g=y&SortType=total_tranpro_desc&initiative_id=SB_20150717073819&isPremium=y&filterCat=400103%2C515%2C4099&needQuery=n&groupsort=1
 1. Open source code available in ./src.
 2. Completed Features:
  1. Digest based authentication (No clear text passwords) ... Done
@@ -43,7 +43,7 @@
 5. Change the settings in the "defaults" section of the YADO source code.
 6. Compile and load the code into your nodemcu dev board. (Select the esp8266 from the boards menu).
 
-###
+### Optional
 
 1. Install Atmel Studio and Visual Micro. This is a better IDE than the Arduino IDE.
 
