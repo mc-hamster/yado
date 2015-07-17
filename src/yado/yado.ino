@@ -37,11 +37,7 @@
 #include <EEPROM.h>
 #include "EEPROMAnything.h"
 
-// Developed using latest ESP8266WebServer from  https://github.com/igrr/Arduino/tree/esp8266/hardware/esp8266com/esp8266/libraries/ESP8266WebServer
-
-
 // Configuration Start
-
 const uint8_t numberOfUsers = 5;
 const uint8_t passwordLength = 16;
 
@@ -88,7 +84,6 @@ const int key_user = 16; // TODO: On startup, if this button is pressed -- broad
 const int key_flash = 0; 
 // End Pin Assignment
 
-
 unsigned long secretRandNumber; // We will generate a new secret on startup.
 
 String menuPath = "0";
@@ -98,6 +93,14 @@ int lastAccessTime = 0;
 String inputString = "";         // a string to hold incoming data
 boolean stringComplete = false;  // whether the string is complete
 
+
+boolean deviceAdmin = 0;
+
+// Define the LED state for ledHTTP
+//   This is used for blinking the LED with a non-blocking method
+boolean ledHTTPState = LOW;
+unsigned long    ledHTTPStateMills = 0;
+long    ledHTTPStateInterval = 250; // How fast to blink the LED
 
 
 void setup ( void ) {
@@ -123,6 +126,19 @@ void setup ( void ) {
   pinMode ( ledCONNECTED, OUTPUT );
   digitalWrite ( ledHTTP, 0 );
   digitalWrite ( ledCONNECTED, 0 );
+
+  // Get access to the key_user button
+  pinMode( key_flash, INPUT_PULLUP );
+  
+  
+  delay(5000);
+  // Set deviceAdmin to one if key_flash is depressed. Otherwise, use defaults.
+  if (digitalRead( key_flash ) == 0) {
+	  deviceAdmin = 1;
+	  pinMode( key_flash, OUTPUT );
+  } else {
+	  pinMode( key_flash, OUTPUT );
+  }  
   
   Serial.begin ( 115200 );
 
@@ -130,57 +146,102 @@ void setup ( void ) {
   //EEPROM_readAnything(0, settings);
 
 
+  if (deviceAdmin) {
+	  //delay(2000); 
+	  WiFi.mode(WIFI_AP);
+	  WiFi.softAP("yado_admin", "yado_admin");
+	  WiFi.mode(WIFI_AP);
+	  
+	  //WiFi.printDiag(Serial);
 
-  WiFi.begin ( settings.ssid, settings.ssidPassword );
+	  Serial.print ( "IP address: " );
+	  Serial.println ( WiFi.softAPIP() );
+	  printAPMacAddress();
 
-  // Documentation says this is supposed to come before WiFi.begin, but when it is there -- it doesn't work. WHY?!?!?!
-  if (settings.ipMode == 1) { // 0 = Dynamic, 1 = Static
-    WiFi.config ( settings.ipAddress, settings.ipGateway, settings.ipSubnet) ;
-  }
+	  // We are using the amount of time required to connect to the AP as the seed to a random number generator.
+	  //   We should look for other ways to improve the seed. This should be "good enough" for now.
+	  randomSeed(micros());
+	  secretRandNumber = random(2147483646); // Full range of long 2147483647
+	  Serial.println("Secret: " + String(secretRandNumber));
+
+	  server.on ( "/", handleAdminRoot );
+	  server.on ( "/externalScript.js", handleExternalScriptJS );
+	  server.on ( "/json/sensors", handleJSONSensors );
+	  server.on ( "/json/digest/new", handleJSONDigestNew );
+	  server.on ( "/handleBigResponse", handleBigResponse );
+
+	  server.onNotFound ( handleNotFound );
+	  server.begin();
+	  Serial.println ( "HTTP server started" );
+
+  } else {
+	  WiFi.begin ( settings.ssid, settings.ssidPassword );
+	  WiFi.mode ( WIFI_STA );
+
+	  // Documentation says this is supposed to come before WiFi.begin, but when it is there -- it doesn't work. WHY?!?!?!
+	  if (settings.ipMode == 1) { // 0 = Dynamic, 1 = Static
+		WiFi.config ( settings.ipAddress, settings.ipGateway, settings.ipSubnet) ;
+	  }
   
-  Serial.println ( "" );
+	  Serial.println ( "" );
 
-  //EEPROM_readAnything(0, settings);
+	  //EEPROM_readAnything(0, settings);
 
-  // Wait for connection
-  while ( WiFi.status() != WL_CONNECTED ) {
-    delay ( 500 );
-    Serial.print ( "." );
-  }
+	  // Wait for connection
+	  while ( WiFi.status() != WL_CONNECTED ) {
+		delay ( 500 );
+		Serial.print ( "." );
+	  }
   
-  digitalWrite ( ledCONNECTED, 1 );
+	  digitalWrite ( ledCONNECTED, 1 );
 
-  WiFi.printDiag(Serial);
+	  WiFi.printDiag(Serial);
 
-  Serial.print ( "IP address: " );
-  Serial.println ( WiFi.localIP() );
-  printMacAddress();
+	  Serial.print ( "IP address: " );
+	  Serial.println ( WiFi.localIP() );
+	  printMacAddress();
 
-  // We are using the amount of time required to connect to the AP as the seed to a random number generator.
-  //   We should look for other ways to improve the seed. This should be "good enough" for now.
-  randomSeed(micros());
-  secretRandNumber = random(2147483646); // Full range of long 2147483647
-  Serial.println("Secret: " + String(secretRandNumber));
+	  // We are using the amount of time required to connect to the AP as the seed to a random number generator.
+	  //   We should look for other ways to improve the seed. This should be "good enough" for now.
+	  randomSeed(micros());
+	  secretRandNumber = random(2147483646); // Full range of long 2147483647
+	  Serial.println("Secret: " + String(secretRandNumber));
 
-  server.on ( "/", handleRoot );
-  server.on ( "/externalScript.js", handleExternalScriptJS );
-  server.on ( "/json/sensors", handleJSONSensors );
-  server.on ( "/json/digest/new", handleJSONDigestNew );
-  server.on ( "/handleBigResponse", handleBigResponse );
+	  server.on ( "/", handleRoot );
+	  server.on ( "/externalScript.js", handleExternalScriptJS );
+	  server.on ( "/json/sensors", handleJSONSensors );
+	  server.on ( "/json/digest/new", handleJSONDigestNew );
+	  server.on ( "/handleBigResponse", handleBigResponse );
 
-  server.onNotFound ( handleNotFound );
-  server.begin();
-  Serial.println ( "HTTP server started" );
+	  server.onNotFound ( handleNotFound );
+	  server.begin();
+	  Serial.println ( "HTTP server started" );
+  }
   
 }
 
 
 void loop ( void ) {
+	
   server.handleClient();
 
-  menuLoop() ;
+  //menuLoop() ;
 
-//  Serial.println ( settings.accessGeneral[0] );
+  if (deviceAdmin) {
+	  unsigned long ledHTTPCurrentMills = millis();
+
+	  if (ledHTTPCurrentMills - ledHTTPStateMills > ledHTTPStateInterval) {
+		  ledHTTPStateMills = ledHTTPCurrentMills;
+		  
+		  if (ledHTTPState) {
+			  ledHTTPState = 0;
+		  } else {
+			  ledHTTPState = 1;
+		  }
+		  digitalWrite( ledCONNECTED, ledHTTPState );
+		  //Serial.println ( WiFi.softAPIP() );
+	  }
+  }
 
 }
 

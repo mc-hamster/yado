@@ -59,7 +59,7 @@ String readSensor ( uint8_t sensor ) {
 				return "Closed";
 				} else {
 				return "Open";
-			}
+				}
 			} else if (sensor == 2) {
 			if (digitalRead(sensor2)) {
 				return "Closed";
