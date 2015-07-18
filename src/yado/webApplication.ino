@@ -116,7 +116,7 @@ void handleRoot() {
     //
     // Request time + TTL must not be greater than current time
     if ((requestTime.toInt() <= sec)
-        && (requestTime.toInt() >= sec - requestTTL)) {
+        && (requestTime.toInt() >= sec - settings.requestTTL)) {
       requestRangeValid = 1;
 
     } else {
@@ -169,7 +169,7 @@ void handleRoot() {
 
   message += "<html>\n";
   message += " <head>\n";
-  message += "  <meta http-equiv='refresh' content='"  +  String(requestTTL) + "; url=/'/>\n";
+  message += "  <meta http-equiv='refresh' content='"  +  String(settings.requestTTL) + "; url=/'/>\n";
   message += "  <meta name='viewport' content='initial-scale=1.5, user-scalable=no'>\n";
   message += "  <link rel=\"icon\" href=\"data:;base64,iVBORw0KGgo=\">\n";
   message += "  <title>Garage Door Opener</title>\n";

@@ -43,10 +43,10 @@ const uint8_t passwordLength = 16;
 
 struct access_t
 {
-  uint8_t admin;
-  uint8_t conf;
+  uint8_t admin;  // Reserved
+  uint8_t conf;   // Reserved
   char password[passwordLength + 1]; // One more byte than required; String needs to be null terminated
-  char user[passwordLength + 1];  // One more byte than required; String needs to be null terminated
+  char user[passwordLength + 1];  // Reserved
   char note[passwordLength + 1];  // One more byte than required; String needs to be null terminated
 };
 
@@ -56,6 +56,7 @@ struct settings_t
 {
   char ssid[33];         // One more byte than required; String needs to be null terminated
   char ssidPassword[65]; // One more byte than required; String needs to be null terminated
+  int requestTTL;
   access_t accessGeneral[numberOfUsers];
   uint8_t ipMode; // 0 = Dynamic, 1 = Static
   uint8_t ipAddress[4]; // 255.255.255.255
@@ -63,8 +64,6 @@ struct settings_t
   uint8_t ipSubnet[4];  // 255.255.255.255
 } settings;
 
-
-int requestTTL = 60;
 
 // Configuration End
 
@@ -80,8 +79,8 @@ const int open1 = 5;
 const int open2 = 4;
 
 // These buttons are exposed on the nodemcu dev board
-const int key_user = 16; // TODO: On startup, if this button is pressed -- broadcast an AP
-const int key_flash = 0;
+const int key_user = 16; // What can we do with this button?
+const int key_flash = 0; // If pressed within 5 seconds of power on, enter admin mode
 // End Pin Assignment
 
 unsigned long secretRandNumber; // We will generate a new secret on startup.
@@ -94,7 +93,7 @@ String inputString = "";         // a string to hold incoming data
 boolean stringComplete = false;  // whether the string is complete
 
 
-boolean deviceAdmin = 0;
+boolean deviceAdmin = 1;
 
 // Define the LED state for ledHTTP
 //   This is used for blinking the LED with a non-blocking method
@@ -162,11 +161,12 @@ void setup ( void ) {
     //   We should look for other ways to improve the seed. This should be "good enough" for now.
 
     server.on ( "/", handleAdminRoot );
-    server.on ( "/conf/display", handleAdminConfDisplay );
-    server.on ( "/conf/wifi", handleAdminConfWifi );
+    server.on ( "/conf/network", handleAdminConfNetwork );
     server.on ( "/conf/accounts", handleAdminConfAccounts );
     server.on ( "/conf/sensors", handleAdminConfSensors );
-    server.on ( "/restart", handleAdminRestart);
+    server.on ( "/system/settings", handleAdminSettings );
+    server.on ( "/system/restart", handleAdminRestart);
+    server.on ( "/system/apply", handleAdminApply);
 
     server.onNotFound ( handleNotFound );
     server.begin();
