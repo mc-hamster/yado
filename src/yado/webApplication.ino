@@ -173,6 +173,7 @@ void handleRoot() {
   message += "  <meta name='viewport' content='initial-scale=1.5, user-scalable=no'>\n";
   message += "  <link rel=\"icon\" href=\"data:;base64,iVBORw0KGgo=\">\n";
   message += "  <title>Garage Door Opener</title>\n";
+  message += "  <link rel=\"stylesheet\" href=\"/yado.css\">\n";
 //  message += "  <!script src='externalScript.js'></script>\n";
   message += "  <script src='http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha1.js'></script>\n";
   message += "  <script>\n";
@@ -189,9 +190,6 @@ void handleRoot() {
   message += "  return true; \n";
   message += "}\n";
   message += "  </script>\n";
-  message += "  <style>\n";
-  message += "    body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }\n";
-  message += "  </style>\n";
   message += "</head>\n";
   message += "<body>\n";
   message += "  <h2><a href=/>Garage Door Opener</a></h1>\n";
@@ -307,4 +305,84 @@ void handleBigResponse() {
 	delay(1); // Give the web browser time to receive the data.
 	client.stop();
   digitalWrite ( ledHTTP, 0 );
+}
+
+
+void handleCSS () {
+	digitalWrite ( ledHTTP, 1 );
+
+	String message = "";
+	message += "@charset \"UTF-8\";\n";
+	message += "body {\n";
+	message += "background-color: #FFFFCC;\n";
+	message += "font-family: Arial, Helvetica, sans-serif;\n";
+	message += "font-size: 12px;\n";
+	message += "line-height: 24px;\n";
+	message += "color: #333333;\n";
+	message += "}\n";
+	message += "td, th {\n";
+	message += "font-family: Arial, Helvetica, sans-serif;\n";
+	message += "font-size: 12px;\n";
+	message += "line-height: 24px;\n";
+	message += "color: #330000;\n";
+	message += "}\n";
+	message += "a {\n";
+	message += "color: #330000;\n";
+	message += "}\n";
+	message += "form {\n";
+	message += "background-color: #CCCC99;\n";
+	message += "}\n";
+	message += ".title {\n";
+	message += "font-family: Georgia, \"Times New Roman\", Times, serif;\n";
+	message += "font-size: 18px;\n";
+	message += "line-height: 30px;\n";
+	message += "background-color: #990000; color: #FFFF66;\n";
+	message += "}\n";
+	message += ".subtitle {\n";
+	message += "font-family: Georgia, \"Times New Roman\", Times, serif;\n";
+	message += "font-size: 16px;\n";
+	message += "line-height: 20px;\n";
+	message += "font-weight: bold;\n";
+	message += "color: #660000; font-style: oblique;\n";
+	message += "}\n";
+	message += ".header {\n";
+	message += "font-family: Georgia, \"Times New Roman\", Times, serif;\n";
+	message += "font-size: 24px;\n";
+	message += "background-color: #990000;\n";
+	message += "color: #FFFF66;\n";
+	message += "}\n";
+	message += ".nav {\n";
+	message += "font-family: Georgia, \"Times New Roman\", Times, serif;\n";
+	message += "font-size: 12px;\n";
+	message += "font-weight: bold;\n";
+	message += "background-color: #CCCC66;\n";
+	message += "}\n";
+	message += ".navLink {\n";
+	message += "font-family: Arial, Helvetica, sans-serif;\n";
+	message += "font-size: 14px;\n";
+	message += "font-weight: bold;\n";
+	message += "background-color: #DEDECA;\n";
+	message += "}\n";
+	message += "a:hover {\n";
+	message += "color: #DEDECA;\n";
+	message += "background-color: #330000;\n";
+	message += "}\n";
+	message += ".sidebar {\n";
+	message += "font-family: Georgia, \"Times New Roman\", Times, serif;\n";
+	message += "font-size: 12px;\n";
+	message += "line-height: 18px;\n";
+	message += "padding: 3px;\n";
+	message += "background-color: #FFFF99;\n";
+	message += "}\n";
+	message += ".sidebarHeader {\n";
+	message += "font-family: Georgia, \"Times New Roman\", Times, serif;\n";
+	message += "font-size: 14px;\n";
+	message += "line-height: 18px;\n";
+	message += "color: #FFFF99;\n";
+	message += "background-color: #999933;\n";
+	message += "font-weight: bold;\n";
+
+	server.send ( 200, "text/css", message );
+
+	digitalWrite ( ledHTTP, 0 );
 }

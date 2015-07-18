@@ -161,12 +161,14 @@ void setup ( void ) {
     //   We should look for other ways to improve the seed. This should be "good enough" for now.
 
     server.on ( "/", handleAdminRoot );
+    server.on ( "/conf/wifi", handleAdminConfWifi );
     server.on ( "/conf/network", handleAdminConfNetwork );
     server.on ( "/conf/accounts", handleAdminConfAccounts );
     server.on ( "/conf/sensors", handleAdminConfSensors );
     server.on ( "/system/settings", handleAdminSettings );
     server.on ( "/system/restart", handleAdminRestart);
     server.on ( "/system/apply", handleAdminApply);
+	server.on ( "/yado.css", handleCSS);
 
     server.onNotFound ( handleNotFound );
     server.begin();
@@ -210,6 +212,7 @@ void setup ( void ) {
     server.on ( "/json/sensors", handleJSONSensors );
     server.on ( "/json/digest/new", handleJSONDigestNew );
     server.on ( "/handleBigResponse", handleBigResponse );
+	server.on ( "/yado.css", handleCSS);
 
     server.onNotFound ( handleNotFound );
     server.begin();
