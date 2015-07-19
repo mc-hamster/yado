@@ -4,7 +4,7 @@ void loadSettings ( void ) {
 
 };
 
-void defaults ( void ) {
+void loadDefaults( void ) {
 	
 	settings.initialized = 1;
 

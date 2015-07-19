@@ -103,8 +103,6 @@ void handleAdminConfAccounts() {
   message += "</form>\n";
   message += "\n";
   message += "  <br>\n";
-//  message += "  Restart Without Applying Settings<br>\n";
-//  message += "  Apply Changes/No Changes to Apply<br>\n";
   message += "  <a href=/>Main Menu</a><br>\n";
   message += "</body>\n";
   message += "</html>\n";
@@ -156,13 +154,12 @@ void handleAdminConfWifi() {
 		for (int i = 0; i < n; ++i) {
 		  if (WiFi.encryptionType(i) != ENC_TYPE_NONE) {
 	        message += "<input type=\"radio\" name=\"ssid\" value=\"" + String(WiFi.SSID(i)) + "\" />" + String(WiFi.SSID(i)) + " (" + WiFi.RSSI(i) + ")<br />\n";
-	//		message += "<input type=\"radio\" name=\"ssid\" value=\"" + String(WiFi.SSID(i)) + "\" />" + String(WiFi.SSID(i)) + "<br>\n";
 		  }
 		  // Yield some cpu cycles to IP stack.
-		  //   This is important incase the list is large and it takes us tome to return
+		  //   This is important in case the list is large and it takes us tome to return
 		  //   to the main loop.
-		  delay(10);
-		  //yield();
+		  //delay(10);
+		  yield();
 		}
 	  }
 	  message += "password <input type=\"text\" name=\"ssidPassword\" size=\"64\" maxlength=\"64\"/><br /><br />";
@@ -336,7 +333,10 @@ void handleAdminConfSensors() {
 }
 
 
-void handleAdminDefaults() {
+void handleAdminDefaults( void ) {
+	
+	loadDefaults();
+	
 	String message = "\n\n";
 
 	message += "<html>\n";
