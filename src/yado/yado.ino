@@ -54,9 +54,9 @@ struct access_t
 //   esp8266 will need to be expanded.
 struct settings_t
 {
+  int initialized;       // If not "1", then we have not yet initialized with defaults
   char ssid[33];         // One more byte than required; String needs to be null terminated
   char ssidPassword[65]; // One more byte than required; String needs to be null terminated
-  int requestTTL;
   access_t accessGeneral[numberOfUsers];
   uint8_t ipMode; // 0 = Dynamic, 1 = Static
   uint8_t ipAddress[4]; // 255.255.255.255
@@ -64,6 +64,7 @@ struct settings_t
   uint8_t ipSubnet[4];  // 255.255.255.255
 } settings;
 
+int requestTTL = 120;
 
 // Configuration End
 
@@ -93,7 +94,7 @@ String inputString = "";         // a string to hold incoming data
 boolean stringComplete = false;  // whether the string is complete
 
 
-boolean deviceAdmin = 1;
+boolean deviceAdmin = 0;
 
 // Define the LED state for ledHTTP
 //   This is used for blinking the LED with a non-blocking method
@@ -103,7 +104,7 @@ long    ledHTTPStateInterval = 250; // How fast to blink the LED
 
 
 void setup ( void ) {
-  //EEPROM.begin(512); // 512 bytes should be more than enough (famous last words)
+  EEPROM.begin(1024); // 512 bytes should be more than enough (famous last words)
   loadSettings();
 
   inputString.reserve(50);
@@ -141,10 +142,6 @@ void setup ( void ) {
 
   Serial.begin ( 115200 );
 
-  // Read settings from EEPROM;
-  //EEPROM_readAnything(0, settings);
-
-
   if (deviceAdmin) {
     //delay(2000);
     WiFi.mode(WIFI_AP);
@@ -161,13 +158,14 @@ void setup ( void ) {
     //   We should look for other ways to improve the seed. This should be "good enough" for now.
 
     server.on ( "/", handleAdminRoot );
-    server.on ( "/conf/wifi", handleAdminConfWifi );
-    server.on ( "/conf/network", handleAdminConfNetwork );
-    server.on ( "/conf/accounts", handleAdminConfAccounts );
-    server.on ( "/conf/sensors", handleAdminConfSensors );
-    server.on ( "/system/settings", handleAdminSettings );
-    server.on ( "/system/restart", handleAdminRestart);
-    server.on ( "/system/apply", handleAdminApply);
+     server.on ( "/conf/wifi", handleAdminConfWifi );
+     server.on ( "/conf/network", handleAdminConfNetwork );
+     server.on ( "/conf/accounts", handleAdminConfAccounts );
+     server.on ( "/conf/sensors", handleAdminConfSensors );
+     server.on ( "/system/defaults", handleAdminDefaults );
+     server.on ( "/system/settings", handleAdminSettings );
+     server.on ( "/system/restart", handleAdminRestart);
+     server.on ( "/system/apply", handleAdminApply);
 	server.on ( "/yado.css", handleCSS);
 
     server.onNotFound ( handleNotFound );
@@ -211,7 +209,7 @@ void setup ( void ) {
     server.on ( "/externalScript.js", handleExternalScriptJS );
     server.on ( "/json/sensors", handleJSONSensors );
     server.on ( "/json/digest/new", handleJSONDigestNew );
-    server.on ( "/handleBigResponse", handleBigResponse );
+//    server.on ( "/handleBigResponse", handleBigResponse );
 	server.on ( "/yado.css", handleCSS);
 
     server.onNotFound ( handleNotFound );

@@ -1,5 +1,13 @@
 void loadSettings ( void ) {
+
+  EEPROM_readAnything(0, settings);
+
+};
+
+void defaults ( void ) {
 	
+	settings.initialized = 1;
+
 	settings.ipAddress[0] = 10;
 	settings.ipAddress[1] = 11;
 	settings.ipAddress[2] = 12;
@@ -15,17 +23,15 @@ void loadSettings ( void ) {
 	settings.ipSubnet[2] = 255;
 	settings.ipSubnet[3] = 0;
 	
-	settings.ipMode = 0; // 0 = Dynamic, 1 = Static
+	settings.ipMode = 1; // 0 = Dynamic, 1 = Static
 	
-	strncpy(settings.ssid, "ssid_name_here", 32);
-	strncpy(settings.ssidPassword, "ssid_password_here", 64);
+	strncpy(settings.ssid, "default_ssid", 32);
+	strncpy(settings.ssidPassword, "password", 64);
 
+	strncpy(settings.accessGeneral[0].password, "default", passwordLength);
+	strncpy(settings.accessGeneral[1].password, "", passwordLength);
+	strncpy(settings.accessGeneral[2].password, "", passwordLength);
+	strncpy(settings.accessGeneral[3].password, "", passwordLength);
+	strncpy(settings.accessGeneral[4].password, "", passwordLength);
 
-	strncpy(settings.accessGeneral[0].password, "access_passworda", passwordLength);
-	strncpy(settings.accessGeneral[1].password, "access_passwordb", passwordLength);
-	strncpy(settings.accessGeneral[2].password, "access_passwordc", passwordLength);
-	strncpy(settings.accessGeneral[3].password, "access_passwordd", passwordLength);
-	strncpy(settings.accessGeneral[4].password, "access_passworde", passwordLength);
-
-	requestTTL = 600;
-};
+}

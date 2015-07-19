@@ -1,19 +1,7 @@
-// Clear the eeprom of all values.
-void eepromClear() {
-  for (int i = 0; i < 512; i++)
-    EEPROM.write(i, 0);
 
-  EEPROM.end();
-}
 
 
 void printMenu ( String whatMenu ) {
-
-  //strcpy( settings.ssid, "helloworld" ) ;
-
-  //EEPROM_writeAnything(0, settings);
-
-EEPROM_readAnything(0, settings);
 
   if (whatMenu == "0") {
     Serial.println ( "" ) ;
