@@ -398,16 +398,19 @@ void handleAdminApply() {
   message += "</head>\n";
   message += "<body>\n";
   message += "  <h2>Applying new settings...DONE</h1>\n";
+  message += "<br>\n";
+  message += "<br>\n";
+  message += "Wrote ";
+  message += EEPROM_writeAnything(0, settings);
+  message += "bytes<br>\n;";
+  message += "<br>\n";
   message += "  <a href=/>Main Menu</a><br>\n";
   message += "</body>\n";
   message += "</html>\n";
 
-//  eepromClear();
-
-  message += EEPROM_writeAnything(0, settings);
   EEPROM.commit(); // Required for ESP8266. Not part of normal eeprom library.
-//  EEPROM.end(); // Required for ESP8266. Not part of normal eeprom library.
-  
+
+  // Reading the config back out is probably unnecessary, but it is good insurance.
   EEPROM_readAnything(0, settings);
 
   send( message );

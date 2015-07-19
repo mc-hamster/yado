@@ -40,6 +40,7 @@
 // Configuration Start
 const uint8_t numberOfUsers = 5;
 const uint8_t passwordLength = 16;
+const uint8_t noteLength = 32;
 
 struct access_t
 {
@@ -47,7 +48,7 @@ struct access_t
   uint8_t conf;   // Reserved
   char password[passwordLength + 1]; // One more byte than required; String needs to be null terminated
   char user[passwordLength + 1];  // Reserved
-  char note[passwordLength + 1];  // One more byte than required; String needs to be null terminated
+  char note[noteLength + 1];  // One more byte than required; String needs to be null terminated
 };
 
 // This structure should not grow larger than 512 bytes. If so, the size of the eeprom on the
