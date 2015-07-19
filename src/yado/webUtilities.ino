@@ -1,4 +1,7 @@
 
+// Our own version of 'send' which is otherwise in the ESP8266WebServer library. Much inproved without
+//   the performance issue in the stock library. We may be able to get rid of this some time in the
+//   future if the library's version of send is fixed.
 void sendMime (String mimeType, String message) {
 	WiFiClient client = server.client();
 
@@ -12,6 +15,9 @@ void sendMime (String mimeType, String message) {
 	client.stop();
 }
 
+// Our own version of 'send' which is otherwise in the ESP8266WebServer library. Much inproved without
+//   the performance issue in the stock library. We may be able to get rid of this some time in the
+//   future if the library's version of send is fixed.
 void send(String message) {
 	WiFiClient client = server.client();
 

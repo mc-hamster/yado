@@ -42,6 +42,19 @@ const uint8_t numberOfUsers = 5;
 const uint8_t passwordLength = 16;
 const uint8_t noteLength = 32;
 
+const uint8_t sensorLabelLength = 16;
+
+// Contact sensors
+struct csensor_t
+{
+	boolean enabled;
+	boolean invert;
+	char name[sensorLabelLength + 1]; // One more byte than required; String needs to be null terminated
+	char high[sensorLabelLength + 1];  // Reserved
+	char low[sensorLabelLength + 1];  // One more byte than required; String needs to be null terminated
+};
+
+// 
 struct access_t
 {
   uint8_t admin;  // Reserved
@@ -51,14 +64,14 @@ struct access_t
   char note[noteLength + 1];  // One more byte than required; String needs to be null terminated
 };
 
-// This structure should not grow larger than 512 bytes. If so, the size of the eeprom on the
-//   esp8266 will need to be expanded.
+// This structure should not grow larger than 1024 bytes.
 struct settings_t
 {
   int initialized;       // If not "1", then we have not yet initialized with defaults
   char ssid[33];         // One more byte than required; String needs to be null terminated
   char ssidPassword[65]; // One more byte than required; String needs to be null terminated
   access_t accessGeneral[numberOfUsers];
+  csensor_t contactSensors[2];
   uint8_t ipMode; // 0 = Dynamic, 1 = Static
   uint8_t ipAddress[4]; // 255.255.255.255
   uint8_t ipGateway[4]; // 255.255.255.255
