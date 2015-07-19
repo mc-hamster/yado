@@ -47,14 +47,14 @@ const uint8_t sensorLabelLength = 16;
 // Contact sensors
 struct csensor_t
 {
-	boolean enabled;
-	boolean invert;
-	char name[sensorLabelLength + 1]; // One more byte than required; String needs to be null terminated
-	char high[sensorLabelLength + 1];  // Reserved
-	char low[sensorLabelLength + 1];  // One more byte than required; String needs to be null terminated
+  boolean enabled;
+  boolean invert;
+  char name[sensorLabelLength + 1]; // One more byte than required; String needs to be null terminated
+  char high[sensorLabelLength + 1];  // Reserved
+  char low[sensorLabelLength + 1];  // One more byte than required; String needs to be null terminated
 };
 
-// 
+//
 struct access_t
 {
   uint8_t admin;  // Reserved
@@ -172,15 +172,15 @@ void setup ( void ) {
     //   We should look for other ways to improve the seed. This should be "good enough" for now.
 
     server.on ( "/", handleAdminRoot );
-     server.on ( "/conf/wifi", handleAdminConfWifi );
-     server.on ( "/conf/network", handleAdminConfNetwork );
-     server.on ( "/conf/accounts", handleAdminConfAccounts );
-     server.on ( "/conf/sensors", handleAdminConfSensors );
-     server.on ( "/system/defaults", handleAdminDefaults );
-     server.on ( "/system/settings", handleAdminSettings );
-     server.on ( "/system/restart", handleAdminRestart);
-     server.on ( "/system/apply", handleAdminApply);
-	server.on ( "/yado.css", handleCSS);
+    server.on ( "/conf/wifi", handleAdminConfWifi );
+    server.on ( "/conf/network", handleAdminConfNetwork );
+    server.on ( "/conf/accounts", handleAdminConfAccounts );
+    server.on ( "/conf/sensors", handleAdminConfSensors );
+    server.on ( "/system/defaults", handleAdminDefaults );
+    server.on ( "/system/settings", handleAdminSettings );
+    server.on ( "/system/restart", handleAdminRestart);
+    server.on ( "/system/apply", handleAdminApply);
+    server.on ( "/yado.css", handleCSS);
 
     server.onNotFound ( handleNotFound );
     server.begin();
@@ -223,8 +223,8 @@ void setup ( void ) {
     server.on ( "/externalScript.js", handleExternalScriptJS );
     server.on ( "/json/sensors", handleJSONSensors );
     server.on ( "/json/digest/new", handleJSONDigestNew );
-//    server.on ( "/handleBigResponse", handleBigResponse );
-	server.on ( "/yado.css", handleCSS);
+    //    server.on ( "/handleBigResponse", handleBigResponse );
+    server.on ( "/yado.css", handleCSS);
 
     server.onNotFound ( handleNotFound );
     server.begin();

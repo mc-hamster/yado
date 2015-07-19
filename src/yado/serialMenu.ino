@@ -40,7 +40,7 @@ void printMenu ( String whatMenu ) {
     Serial.println ( "  Press ENTER to abort." );
     Serial.print ( "  Enter a new SSID Password : " );
   }
-  
+
   if (whatMenu == "2") {
     Serial.println ( "" ) ;
     Serial.println ( ">>IP Configuration" );
@@ -145,12 +145,12 @@ void menuLoop(void) {
       } else if ( inputString == "6" ) {
         menuPath = "6";
 
-        
+
       }
     } else if (menuPath == "1" ) {
       //printMenu ( "1" );
 
- 
+
 
       if ( inputString == "1" ) {
         menuPath = "1.1";
@@ -180,7 +180,7 @@ void menuLoop(void) {
 
     } else if (menuPath == "4" ) {
       //printMenu ( "4" ) ;
-      
+
       if ( inputString == "x" ) {
         menuPath = "0";
       }
@@ -193,7 +193,7 @@ void menuLoop(void) {
       } else if (inputString == "yes") {
         Serial.println ( "" );
         Serial.print ( "EEPROM Erasing..." ) ;
-        eepromClear();      
+        eepromClear();
         Serial.println ( " DONE!" );
         Serial.println ( "" );
         menuPath = "0";
