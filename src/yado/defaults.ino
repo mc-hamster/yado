@@ -37,7 +37,7 @@ void loadDefaults( void ) {
   strncpy(settings.accessGeneral[0].note, "", noteLength);
   strncpy(settings.accessGeneral[1].note, "", noteLength);
   strncpy(settings.accessGeneral[2].note, "", noteLength);
-  strncpy(settings.accessGeneral[3].note, "", noteLength;
-          strncpy(settings.accessGeneral[4].note, "", noteLength);
+  strncpy(settings.accessGeneral[3].note, "", noteLength);
+  strncpy(settings.accessGeneral[4].note, "", noteLength);
 
 }
