@@ -164,7 +164,7 @@ void setup ( void ) {
     WiFi.softAP("yado_admin", "yado_admin");
     //WiFi.mode(WIFI_AP);
     WiFi.config ( IPAddress(192, 168, 4, 1), IPAddress(192, 168, 4, 1), IPAddress(255, 255, 255, 0)) ;
-
+    delay(10);
 
 	// if DNSServer is started with "*" for domain name, it will reply with
 	// provided IP to all DNS request
@@ -180,7 +180,8 @@ void setup ( void ) {
     // We are using the amount of time required to connect to the AP as the seed to a random number generator.
     //   We should look for other ways to improve the seed. This should be "good enough" for now.
 
-    server.on ( "/", handleAdminRoot );
+    server.on ( "/", handleAdminFrameset );
+    server.on ( "/leftnav", handleAdminNav );
     server.on ( "/conf/wifi", handleAdminConfWifi );
     server.on ( "/conf/network", handleAdminConfNetwork );
     server.on ( "/conf/accounts", handleAdminConfAccounts );
