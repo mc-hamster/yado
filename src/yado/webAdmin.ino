@@ -1,5 +1,5 @@
 
-void handleAdminRoot() {
+void handleAdminNav() {
   String message = "\n\n";
 
   message += "<html>\n";
@@ -12,19 +12,18 @@ void handleAdminRoot() {
   message += "<body>\n";
   message += "  <h2>Configure</h2>\n";
   message += "  <br>\n";
-  message += "  <a href=/conf/wifi>Wifi</a><br>\n";
-  message += "  <a href=/conf/network>Network</a><br>\n";
-  message += "  <a href=/conf/accounts>Accounts</a><br>\n";
-  message += "  <a href=/conf/sensors>Sensors</a><br>\n";
+  message += "  <a href=/conf/wifi  target=right>Wifi</a><br>\n";
+  message += "  <a href=/conf/network target=right>Network</a><br>\n";
+  message += "  <a href=/conf/accounts target=right>Accounts</a><br>\n";
+  message += "  <a href=/conf/sensors target=right>Sensors</a> (Work in progress)<br>\n";
   message += "  <br>\n";
   message += "  <h2>System</h2>\n";
-  message += "  <a href=/system/settings>Display Settings</a><br>\n";
-  message += "  <a href=/system/defaults>Load Defaults</a> Load Defaults<br>\n";
-  message += "  <a href=/system/restart>Restart</a> (Leave admin configuration)<br>\n";
-  message += "  <a href=/system/apply>Apply New Settings</a><br>\n";
-  message += "  <a href=/>Main Menu</a><br>\n";
+  message += "  <a href=/system/settings target=right>Display Settings</a><br>\n";
+  message += "  <a href=/system/defaults target=right>Load Defaults</a> Load Defaults<br>\n";
+  message += "  <a href=/system/restart target=right>Restart</a> (Leave admin configuration)<br>\n";
+  message += "  <a href=/system/apply target=right>Apply New Settings</a><br>\n";
   message += "  <br>\n";
-  message += "  Auto Restart in ... 30:00\n";
+//  message += "  Auto Restart in ... 30:00\n";
   message += "</body>\n";
   message += "</html>\n";
 
@@ -420,6 +419,13 @@ void handleAdminApply() {
 void handleAdminSettings () {
   String message = "\n\n";
 
+  int flashSize = ESP.getFlashChipSize(); // returns the flash chip size, in bytes, as seen by the SDK (may be less than actual size).
+  int flashFrequency = ESP.getFlashChipSpeed(); // returns the flash chip frequency, in Hz.
+  int flashID = ESP.getFlashChipId();// returns the flash chip ID as a 32-bit integer.
+
+
+
+
   message += "<html>\n";
   message += " <head>\n";
   message += "  <meta name='viewport' content='initial-scale=1.5, user-scalable=no'>\n";
@@ -448,6 +454,10 @@ void handleAdminSettings () {
   message += "    \"settings.accessGeneral[3].note\" : " + String(settings.accessGeneral[3].note) + "<br>\n";
   message += "    \"settings.accessGeneral[4].password\" : " + String(settings.accessGeneral[4].password) + "<br>\n";
   message += "    \"settings.accessGeneral[4].note\" : " + String(settings.accessGeneral[4].note) + "<br>\n";
+  message += "  <h2>Flash Statistics</h1>\n";
+  message += "    \"getFlashChipSize\" : " + String(flashSize) + "<br>\n";
+  message += "    \"getFlashChipSpeed\" : " + String(flashFrequency / 1000000) + "Mhz<br>\n";
+  message += "    \"getFlashChipId\" : " + String(flashID) + "<br>\n";
   message += "  <br>\n";
   message += "  <a href=/>Main Menu</a><br>\n";
   message += "</body>\n";
@@ -455,4 +465,17 @@ void handleAdminSettings () {
 
   send( message );
   //  server.send ( 200, "text/html", message );
+}
+
+
+void handleAdminFrameset () {
+	String message = "\n\n";
+
+	message += "<html>\n";
+	message += "<frameset cols=\"120,100%\">\n";
+	message += "<frame name=left src=\"/leftnav\" />\n";
+	message += "<frame name=right src=\"about:blank\" />\n";
+	message += "</frameset>\n";
+
+	send( message );
 }
