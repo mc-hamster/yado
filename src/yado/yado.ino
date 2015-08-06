@@ -31,9 +31,11 @@
  */
 
 #include <ESP8266WiFi.h>
+#include <DNSServer.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <Hash.h>
+
 #include <EEPROM.h>
 #include "EEPROMAnything.h"
 
@@ -82,8 +84,9 @@ int requestTTL = 120;
 
 // Configuration End
 
+const byte DNS_PORT = 53;
 ESP8266WebServer server ( 80 );
-
+DNSServer dnsServer;
 
 // Pin Assignment
 const int ledHTTP = 0;     // Toggled on HTTP Status
@@ -157,12 +160,18 @@ void setup ( void ) {
   Serial.begin ( 115200 );
 
   if (deviceAdmin) {
-    //delay(2000);
     WiFi.mode(WIFI_AP);
     WiFi.softAP("yado_admin", "yado_admin");
-    WiFi.mode(WIFI_AP);
+    //WiFi.mode(WIFI_AP);
+    WiFi.config ( IPAddress(192, 168, 4, 1), IPAddress(192, 168, 4, 1), IPAddress(255, 255, 255, 0)) ;
+
+
+	// if DNSServer is started with "*" for domain name, it will reply with
+	// provided IP to all DNS request
+	dnsServer.start(DNS_PORT, "*", IPAddress(192, 168, 4, 1));
 
     //WiFi.printDiag(Serial);
+    Serial.println ( "Entering admin mode." );
 
     Serial.print ( "IP address: " );
     Serial.println ( WiFi.softAPIP() );
@@ -189,6 +198,8 @@ void setup ( void ) {
   } else {
     WiFi.begin ( settings.ssid, settings.ssidPassword );
     WiFi.mode ( WIFI_STA );
+
+
 
     // Documentation says this is supposed to come before WiFi.begin, but when it is there -- it doesn't work. WHY?!?!?!
     if (settings.ipMode == 1) { // 0 = Dynamic, 1 = Static
@@ -237,8 +248,9 @@ void setup ( void ) {
 void loop ( void ) {
 
   server.handleClient();
-
-  //menuLoop() ;
+  dnsServer.processNextRequest();
+  
+  menuLoop() ;
 
   if (deviceAdmin) {
     unsigned long ledHTTPCurrentMills = millis();
