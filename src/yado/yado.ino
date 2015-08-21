@@ -60,7 +60,7 @@ struct temperature_t
 {
   boolean enabled;
   boolean metricImperial; // 0 = Metric, 1 = Imperial
-}
+};
 
 //
 struct access_t
