@@ -12,18 +12,19 @@ void handleAdminNav() {
   message += "<body>\n";
   message += "  <h2>Configure</h2>\n";
   message += "  <br>\n";
-  message += "  <a href=/conf/wifi  target=right>Wifi</a><br>\n";
+  message += "  <a href=/conf/wifi target=right>Wifi</a><br>\n";
   message += "  <a href=/conf/network target=right>Network</a><br>\n";
   message += "  <a href=/conf/accounts target=right>Accounts</a><br>\n";
   message += "  <a href=/conf/sensors target=right>Sensors</a> (Work in progress)<br>\n";
   message += "  <br>\n";
   message += "  <h2>System</h2>\n";
-  message += "  <a href=/system/settings target=right>Display Settings</a><br>\n";
-  message += "  <a href=/system/defaults target=right>Load Defaults</a> Load Defaults<br>\n";
+  message += "  <a href=/system/defaults target=right>Load Defaults</a>Load Defaults<br>\n";
+  message += "  <a href=/system/apply target=right>Apply Settings</a><br>\n";
   message += "  <a href=/system/restart target=right>Restart</a> (Leave admin configuration)<br>\n";
-  message += "  <a href=/system/apply target=right>Apply New Settings</a><br>\n";
+  message += "  <h2>Preview</h2>\n";
+  message += "  <a href=/system/settings target=right>Display Settings</a><br>\n";
   message += "  <br>\n";
-//  message += "  Auto Restart in ... 30:00\n";
+  //  message += "  Auto Restart in ... 30:00\n";
   message += "</body>\n";
   message += "</html>\n";
 
@@ -293,8 +294,6 @@ void handleAdminConfNetwork() {
   message += "\n";
   message += "\n";
   message += "  <br>\n";
-  message += "  Restart Without Applying Settings<br>\n";
-  message += "  Apply Changes/No Changes to Apply<br>\n";
   message += "  <a href=/>Main Menu</a><br>\n";
   message += "</body>\n";
   message += "</html>\n";
@@ -315,7 +314,7 @@ void handleAdminConfSensors() {
   message += "  <link rel=\"stylesheet\" href=\"/yado.css\">\n";
   message += "</head>\n";
   message += "<body>\n";
-  message += "  <h2>Admin Menu</h1>\n";
+  message += "  <h2>Sensor Configuration</h1>\n";
   message += "  <br>\n";
   message += "  Configure Accounts<br>\n";
   message += "  Configure Sensors<br>\n";
@@ -434,48 +433,60 @@ void handleAdminSettings () {
   message += "  <link rel=\"stylesheet\" href=\"/yado.css\">\n";
   message += "</head>\n";
   message += "<body>\n";
-  message += "  <h2>Current Settings</h1>\n";
+  message += "  <h2>Network Confguration</h1>\n";
   message += "  <br>\n";
-  message += "    \"settings.ssid\" : " + String(settings.ssid) + "<br>\n";
-  message += "    \"settings.ssidPassword\" : " + String(settings.ssidPassword) + "<br>\n";
-  message += "    \"settings.ipMode\" : " + String(settings.ipMode) + " (0 = Dynamic; 1 = Static)<br>\n";
-  message += "    \"settings.ipAddress\" : " + String(settings.ipAddress[0]) + "." + String(settings.ipAddress[1]) + "." + String(settings.ipAddress[2]) + "." + String(settings.ipAddress[3]) + "<br>\n";
-  message += "    \"settings.ipGateway\" : " + String(settings.ipGateway[0]) + "." + String(settings.ipGateway[1]) + "." + String(settings.ipGateway[2]) + "." + String(settings.ipGateway[3]) + "<br>\n";
-  message += "    \"settings.ipSubnet\" : " + String(settings.ipSubnet[0]) + "." + String(settings.ipSubnet[1]) + "." + String(settings.ipSubnet[2]) + "." + String(settings.ipSubnet[3]) + "<br>\n";
+  message += "    ssid : " + String(settings.ssid) + "<br>\n";
+  message += "    ssidPassword : " + String(settings.ssidPassword) + "<br>\n";
+  message += "    ipMode : " + String(settings.ipMode) + " (0 = Dynamic; 1 = Static)<br>\n";
+  message += "    ipAddress : " + String(settings.ipAddress[0]) + "." + String(settings.ipAddress[1]) + "." + String(settings.ipAddress[2]) + "." + String(settings.ipAddress[3]) + "<br>\n";
+  message += "    ipGateway : " + String(settings.ipGateway[0]) + "." + String(settings.ipGateway[1]) + "." + String(settings.ipGateway[2]) + "." + String(settings.ipGateway[3]) + "<br>\n";
+  message += "    ipSubnet : " + String(settings.ipSubnet[0]) + "." + String(settings.ipSubnet[1]) + "." + String(settings.ipSubnet[2]) + "." + String(settings.ipSubnet[3]) + "<br>\n";
   message += "  <br>\n";
-  message += "  <h2>Current Accounts</h1>\n";
-  message += "    \"settings.accessGeneral[0].password\" : " + String(settings.accessGeneral[0].password) + "<br>\n";
-  message += "    \"settings.accessGeneral[0].note\" : " + String(settings.accessGeneral[0].note) + "<br>\n";
-  message += "    \"settings.accessGeneral[1].password\" : " + String(settings.accessGeneral[1].password) + "<br>\n";
-  message += "    \"settings.accessGeneral[1].note\" : " + String(settings.accessGeneral[1].note) + "<br>\n";
-  message += "    \"settings.accessGeneral[2].password\" : " + String(settings.accessGeneral[2].password) + "<br>\n";
-  message += "    \"settings.accessGeneral[2].note\" : " + String(settings.accessGeneral[2].note) + "<br>\n";
-  message += "    \"settings.accessGeneral[3].password\" : " + String(settings.accessGeneral[3].password) + "<br>\n";
-  message += "    \"settings.accessGeneral[3].note\" : " + String(settings.accessGeneral[3].note) + "<br>\n";
-  message += "    \"settings.accessGeneral[4].password\" : " + String(settings.accessGeneral[4].password) + "<br>\n";
-  message += "    \"settings.accessGeneral[4].note\" : " + String(settings.accessGeneral[4].note) + "<br>\n";
+  message += "  <h2>Account Configuration</h1>\n";
+  message += "    accessGeneral[0].password : " + String(settings.accessGeneral[0].password) + "<br>\n";
+  message += "    accessGeneral[0].note : " + String(settings.accessGeneral[0].note) + "<br>\n";
+  message += "    accessGeneral[1].password : " + String(settings.accessGeneral[1].password) + "<br>\n";
+  message += "    accessGeneral[1].note : " + String(settings.accessGeneral[1].note) + "<br>\n";
+  message += "    accessGeneral[2].password : " + String(settings.accessGeneral[2].password) + "<br>\n";
+  message += "    accessGeneral[2].note : " + String(settings.accessGeneral[2].note) + "<br>\n";
+  message += "    accessGeneral[3].password : " + String(settings.accessGeneral[3].password) + "<br>\n";
+  message += "    accessGeneral[3].note : " + String(settings.accessGeneral[3].note) + "<br>\n";
+  message += "    accessGeneral[4].password : " + String(settings.accessGeneral[4].password) + "<br>\n";
+  message += "    accessGeneral[4].note : " + String(settings.accessGeneral[4].note) + "<br>\n";
+  message += "  <h2>Sensor Configuration</h1>\n";
+  message += "    contactSensor[0].enabled : " + String(settings.contactSensor[0].enabled) + "<br>\n";
+  message += "    contactSensor[0].invert : " + String(settings.contactSensor[0].invert) + "<br>\n";
+  message += "    contactSensor[0].high : " + String(settings.contactSensor[0].high) + "<br>\n";
+  message += "    contactSensor[0].low : " + String(settings.contactSensor[0].low) + "<br>\n";
+  message += "    <br>\n";
+  message += "    contactSensor[1].enabled : " + String(settings.contactSensor[1].enabled) + "<br>\n";
+  message += "    contactSensor[1].invert : " + String(settings.contactSensor[1].invert) + "<br>\n";
+  message += "    contactSensor[1].high : " + String(settings.contactSensor[1].high) + "<br>\n";
+  message += "    contactSensor[1].low : " + String(settings.contactSensor[1].low) + "<br>\n";
   message += "  <h2>Flash Statistics</h1>\n";
-  message += "    \"getFlashChipSize\" : " + String(flashSize) + "<br>\n";
-  message += "    \"getFlashChipSpeed\" : " + String(flashFrequency / 1000000) + "Mhz<br>\n";
-  message += "    \"getFlashChipId\" : " + String(flashID) + "<br>\n";
+  message += "    getFlashChipSize : " + String(flashSize) + "<br>\n";
+  message += "    getFlashChipSpeed : " + String(flashFrequency / 1000000) + "Mhz<br>\n";
+  message += "    getFlashChipId : " + String(flashID) + "<br>\n";
   message += "  <br>\n";
   message += "  <a href=/>Main Menu</a><br>\n";
+  message += "  <br>\n";
+  message += "  Firmware: 1.0.0 Alpha 02<br>\n";
+  message += "  <br>\n";
   message += "</body>\n";
   message += "</html>\n";
 
   send( message );
-  //  server.send ( 200, "text/html", message );
 }
 
 
 void handleAdminFrameset () {
-	String message = "\n\n";
+  String message = "\n\n";
 
-	message += "<html>\n";
-	message += "<frameset cols=\"120,100%\">\n";
-	message += "<frame name=left src=\"/leftnav\" />\n";
-	message += "<frame name=right src=\"about:blank\" />\n";
-	message += "</frameset>\n";
+  message += "<html>\n";
+  message += "<frameset cols=\"120,100%\">\n";
+  message += "<frame name=left src=\"/leftnav\" />\n";
+  message += "<frame name=right src=\"about:blank\" />\n";
+  message += "</frameset>\n";
 
-	send( message );
+  send( message );
 }

@@ -86,36 +86,38 @@ boolean validatePassword ( int timeFromClient, String digestFromClient ) {
 
 String readSensor ( uint8_t sensor ) {
 
-  if (1) { // Invert?
-    if (sensor == 1) {
+  if (sensor == 0) {
+    if (settings.contactSensor[0].invert == 1) {
       if (digitalRead(sensor1)) {
-        return "Closed";
+        return String(settings.contactSensor[0].high);
       } else {
-        return "Open";
+        return String(settings.contactSensor[0].low);
       }
-    } else if (sensor == 2) {
-      if (digitalRead(sensor2)) {
-        return "Closed";
-      } else {
-        return "Open";
-      }
-    }
-
-  } else {
-
-    if (sensor == 1) {
+    } else {
       if (digitalRead(sensor1)) {
-        return "Opened";
+        return String(settings.contactSensor[0].low);
       } else {
-        return "Close";
-      }
-    } else if (sensor == 2) {
-      if (digitalRead(sensor2)) {
-        return "Opened";
-      } else {
-        return "Close";
+        return String(settings.contactSensor[0].high);
       }
     }
   }
 
+
+  if (sensor == 1) {
+    if (settings.contactSensor[1].invert == 1) {
+      if (digitalRead(sensor2)) {
+        return String(settings.contactSensor[1].high);
+      } else {
+        return String(settings.contactSensor[1].low);
+      }
+    } else {
+      if (digitalRead(sensor2)) {
+        return String(settings.contactSensor[1].low);
+      } else {
+        return String(settings.contactSensor[1].high);
+      }
+    }
+  }
+
+  return "Sensor Read Error.";
 }

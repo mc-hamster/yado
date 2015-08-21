@@ -194,11 +194,15 @@ void handleRoot() {
   message += "<body>\n";
   message += "  <h2><a href=/>Garage Door Opener</a></h1>\n";
   message += "  <form name=myForm method=get onsubmit=\"return validateForm()\" >\n";
-  message += "  Sensor 1 Status: "  +  readSensor(1) + " <br>\n";
-  message += "  <br>\n";
+  if (settings.contactSensor[0].enabled) {
+    message += "  Sensor 0 Status: "  +  readSensor(0) + " <br>\n";
+    message += "  <br>\n";
+  }
+  if (settings.contactSensor[1].enabled) {
+    message += "  Sensor 1 Status: "  +  readSensor(1) + " <br>\n";
+    message += "  <br>\n";
+  }
   message += "  " + errorString + "<br>\n";
-  //message += "  <br>\n";
-  //message += "  Sensor 2 Status: "  +  readSensor(2) + " <br>\n";
   message += "  <input type=hidden name=time value="  +  String(sec) + "><br>\n";
   message += "  Password: <input type=password name=password value=><br>\n";
   message += "  <!-- Request Password (Computed in Javascript) : --><input type=hidden size=50 name=requestPassword>\n";

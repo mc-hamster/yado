@@ -47,14 +47,20 @@ const uint8_t noteLength = 32;
 const uint8_t sensorLabelLength = 16;
 
 // Contact sensors
-struct csensor_t
+struct sensor_t
 {
   boolean enabled;
   boolean invert;
   char name[sensorLabelLength + 1]; // One more byte than required; String needs to be null terminated
-  char high[sensorLabelLength + 1];  // Reserved
+  char high[sensorLabelLength + 1];  // One more byte than required; String needs to be null terminated
   char low[sensorLabelLength + 1];  // One more byte than required; String needs to be null terminated
 };
+
+struct temperature_t
+{
+  boolean enabled;
+  boolean metricImperial; // 0 = Metric, 1 = Imperial
+}
 
 //
 struct access_t
@@ -62,22 +68,23 @@ struct access_t
   uint8_t admin;  // Reserved
   uint8_t conf;   // Reserved
   char password[passwordLength + 1]; // One more byte than required; String needs to be null terminated
-  char user[passwordLength + 1];  // Reserved
+  char user[passwordLength + 1];  // Not yet used.
   char note[noteLength + 1];  // One more byte than required; String needs to be null terminated
 };
 
 // This structure should not grow larger than 1024 bytes.
 struct settings_t
 {
-  int initialized;       // If not "1", then we have not yet initialized with defaults
+  uint8_t initialized;       // If not "1", then we have not yet initialized with defaults
   char ssid[33];         // One more byte than required; String needs to be null terminated
   char ssidPassword[65]; // One more byte than required; String needs to be null terminated
-  access_t accessGeneral[numberOfUsers];
-  csensor_t contactSensors[2];
   uint8_t ipMode; // 0 = Dynamic, 1 = Static
   uint8_t ipAddress[4]; // 255.255.255.255
   uint8_t ipGateway[4]; // 255.255.255.255
   uint8_t ipSubnet[4];  // 255.255.255.255
+  access_t accessGeneral[numberOfUsers];
+  sensor_t contactSensor[2];
+  temperature_t temperature;
 } settings;
 
 int requestTTL = 120;
@@ -166,9 +173,9 @@ void setup ( void ) {
     WiFi.config ( IPAddress(192, 168, 4, 1), IPAddress(192, 168, 4, 1), IPAddress(255, 255, 255, 0)) ;
     delay(10);
 
-	// if DNSServer is started with "*" for domain name, it will reply with
-	// provided IP to all DNS request
-	dnsServer.start(DNS_PORT, "*", IPAddress(192, 168, 4, 1));
+    // if DNSServer is started with "*" for domain name, it will reply with
+    // provided IP to all DNS request
+    dnsServer.start(DNS_PORT, "*", IPAddress(192, 168, 4, 1));
 
     //WiFi.printDiag(Serial);
     Serial.println ( "Entering admin mode." );
@@ -250,8 +257,6 @@ void loop ( void ) {
 
   server.handleClient();
   dnsServer.processNextRequest();
-  
-  menuLoop() ;
 
   if (deviceAdmin) {
     unsigned long ledHTTPCurrentMills = millis();
