@@ -8,7 +8,7 @@
   1. https://www.oshpark.com/shared_projects/0cBHd21f
  2. Full BOM available with distributor list.
   1. (See BOM in ./hardware for part list)
- 3. Utilizes nodemcu dev board (It's minimal and just $10 on ebay)
+ 3. Utilizes nodemcu dev board (It includes many components and just $7 on ebay)
  4. Supports both v0.9 and v1.0 nodemcu footprints. 
    1. http://www.aliexpress.com/wholesale?shipCountry=us&shipFromCountry=&shipCompanies=&SearchText=nodemcu&exception=&minPrice=&maxPrice=&minQuantity=&maxQuantity=&isFreeShip=n&isFavorite=n&isRtl=yes&isOnSale=n&isBigSale=n&similar_style=n&similar_style_id=&isAtmOnline=n&CatId=0&g=y&SortType=total_tranpro_desc&initiative_id=SB_20150717073819&isPremium=y&filterCat=400103%2C515%2C4099&needQuery=n&groupsort=1
 1. Open source code available in ./src.
@@ -16,14 +16,16 @@
  1. Digest based authentication (No clear text passwords) ... Done
  2. Support for DHCP & Static addresses ... Done
  3. JSON REST API to read door sensors ... Done
- 4. Serve all javascript libaries locally ... DONE
+ 4. Serve all javascript libaries locally ... Done
 3. In progress
- 1. USB Interface to configure all settings ... In progress
- 2. Web Admin Interface for configuration ... Not started
- 3. JSON REST API to open/close door ... Not started
- 4. ... And more!
-4. Planned
- 1. RFID Card support
+ 1. JSON REST API
+  1. Open/Close door ... In progress
+  2. Contact Sensor status ... Done
+  3. New server digest and payload ... Done
+ 2. Web Admin Interface for configuration ... In progress
+  1. Captive portal ... Done
+   1.. Note: DNS server library is unreliable. May cause ESP8266 watchdog reset.
+
 
 ## JSON REST
 
@@ -36,12 +38,12 @@
 
 1. Install Arduino IDE (It's a horrible environment, but easiest to get going): http://arduino.cc
 2. Install board support for the ESP8266: https://github.com/esp8266/Arduino
+ 1. Select your NodeMCU from the board menu.
 3. Install  USB to TTL Bridge Drivers
  1. CH341 : http://www.electrodragon.com/w/CH341 (older nodemcu)
- 2. CP2102 : .... (newer nodemcu)
+ 2. CP2102 : Mac - Drivers built in. Windows - Use windows update. (newer nodemcu)
 4. Load the Yagdo code into the Arduino IDE
-5. Change the settings in the "defaults" section of the YADO source code.
-6. Compile and load the code into your nodemcu dev board. (Select the esp8266 from the boards menu).
+5. Compile and load the code into your nodemcu dev board.
 
 ### Optional
 
@@ -61,7 +63,7 @@
 
 LED2 will continue to blink while Yado is in admin mode. Because unsecured networks are a bad idea, we have conciously decided not to support unsecured Access Points and they won't be listed in the WiFi configuration. Adding support will be a 3 line change, but let's not do it.
 
-Using static IP addresses is recommended, but DHCP also works. The assigned DHCP address is available through the USB serial console (115200, 8n1), through your home router's interface or you can scan the network for Yado.
+Using static IP addresses is recommended, but DHCP also works. The assigned DHCP address is available through the USB serial console (115200, 8n1) on startup, through your home router's interface or you can scan the network for Yado.
 
 Important Note: You will have 30 minutes to make your changes. After 30 minutes, Yado will return to the default operation.
 
@@ -73,6 +75,6 @@ Important Note: You will have 30 minutes to make your changes. After 30 minutes,
 ## Usage: Installation
 
 1. Connect the terminal labled "Open1" to your garage door opener.
-2. Install an optional door sensor to "Sens1".
+2. Install an optional door sensor to "Sens1" or "Sens2".
 
-Sens2 is only exposed to the REST API. Open2 is not used. Adding supoprt for both will take some minimal effort, but the UI will need to be kept simple.
+Open2 is not used. Adding support it will some (very) minimal effort, but the UI will need to be kept simple.
