@@ -18,8 +18,8 @@ void handleAdminNav() {
   message += "  <a href=/conf/sensors target=right>Sensors</a> (Work in progress)<br>\n";
   message += "  <br>\n";
   message += "  <h2>System</h2>\n";
-  message += "  <a href=/system/defaults target=right>Load Defaults</a>Load Defaults<br>\n";
-  message += "  <a href=/system/apply target=right>Apply Settings</a><br>\n";
+  message += "  <a href=/system/defaults target=right>Load Defaults</a><br>\n";
+  message += "  <a href=/system/apply target=right></a><br>\n";
   message += "  <a href=/system/restart target=right>Restart</a> (Leave admin configuration)<br>\n";
   message += "  <h2>Preview</h2>\n";
   message += "  <a href=/system/settings target=right>Display Settings</a><br>\n";
