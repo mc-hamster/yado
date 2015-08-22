@@ -319,8 +319,6 @@ void handleAdminConfSensors() {
   message += "  Configure Accounts<br>\n";
   message += "  Configure Sensors<br>\n";
   message += "  <br>\n";
-  message += "  Restart Without Applying Settings<br>\n";
-  message += "  Apply Changes/No Changes to Apply<br>\n";
   message += "  <a href=/>Main Menu</a><br>\n";
   message += "</body>\n";
   message += "</html>\n";
@@ -400,7 +398,7 @@ void handleAdminApply() {
   message += "<br>\n";
   message += "Wrote ";
   message += EEPROM_writeAnything(0, settings);
-  message += "bytes<br>\n;";
+  message += "bytes<br>\n";
   message += "<br>\n";
   message += "  <a href=/>Main Menu</a><br>\n";
   message += "</body>\n";
