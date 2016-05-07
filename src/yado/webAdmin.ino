@@ -19,7 +19,7 @@ void handleAdminNav() {
   message += "  <br>\n";
   message += "  <h2>System</h2>\n";
   message += "  <a href=/system/defaults target=right>Load Defaults</a><br>\n";
-  message += "  <a href=/system/apply target=right></a><br>\n";
+  message += "  <a href=/system/apply target=right>Apply Changes</a><br>\n";
   message += "  <a href=/system/restart target=right>Restart</a> (Leave admin configuration)<br>\n";
   message += "  <h2>Preview</h2>\n";
   message += "  <a href=/system/settings target=right>Display Settings</a><br>\n";
@@ -29,8 +29,7 @@ void handleAdminNav() {
   message += "</html>\n";
 
 
-  send( message );
-  //  server.send ( 200, "text/html", message );
+    server.send ( 200, "text/html", message );
 }
 
 void handleAdminConfAccounts() {
@@ -108,8 +107,7 @@ void handleAdminConfAccounts() {
   message += "</html>\n";
 
 
-  send( message );
-  //  server.send ( 200, "text/html", message );
+    server.send ( 200, "text/html", message );
 }
 
 void handleAdminConfWifi() {
@@ -158,7 +156,6 @@ void handleAdminConfWifi() {
         // Yield some cpu cycles to IP stack.
         //   This is important in case the list is large and it takes us tome to return
         //   to the main loop.
-        //delay(10);
         yield();
       }
     }
@@ -176,8 +173,7 @@ void handleAdminConfWifi() {
   message += "</body>\n";
   message += "</html>\n";
 
-  send( message );
-  //server.send ( 200, "text/html", message );
+  server.send ( 200, "text/html", message );
 }
 
 
@@ -299,8 +295,7 @@ void handleAdminConfNetwork() {
   message += "</html>\n";
 
 
-  send( message );
-  //  server.send ( 200, "text/html", message );
+  server.send ( 200, "text/html", message );
 }
 
 void handleAdminConfSensors() {
@@ -324,8 +319,7 @@ void handleAdminConfSensors() {
   message += "</html>\n";
 
 
-  send( message );
-  //  server.send ( 200, "text/html", message );
+  server.send ( 200, "text/html", message );
 }
 
 
@@ -348,8 +342,7 @@ void handleAdminDefaults( void ) {
   message += "</body>\n";
   message += "</html>\n";
 
-  send( message );
-  //	server.send ( 200, "text/html", message );
+  server.send ( 200, "text/html", message );
 
   //delay(250);
 
@@ -371,13 +364,11 @@ void handleAdminRestart() {
   message += "</body>\n";
   message += "</html>\n";
 
-  send( message );
-  //	server.send ( 200, "text/html", message );
-
-  //delay(250);
+  server.send ( 200, "text/html", message );
 
   ESP.reset();
 
+  // This is here in the event ESP.reset doesn't work. This will trigger the watchdog.
   while (1) { };
 
 }
@@ -396,9 +387,9 @@ void handleAdminApply() {
   message += "  <h2>Applying new settings...DONE</h1>\n";
   message += "<br>\n";
   message += "<br>\n";
-  message += "Wrote ";
+  message += "<!-- Wrote ";
   message += EEPROM_writeAnything(0, settings);
-  message += "bytes<br>\n";
+  message += "bytes -->\n";
   message += "<br>\n";
   message += "  <a href=/>Main Menu</a><br>\n";
   message += "</body>\n";
@@ -409,8 +400,7 @@ void handleAdminApply() {
   // Reading the config back out is probably unnecessary, but it is good insurance.
   EEPROM_readAnything(0, settings);
 
-  send( message );
-  //  server.send ( 200, "text/html", message );
+  server.send ( 200, "text/html", message );
 
 }
 void handleAdminSettings () {
@@ -473,7 +463,7 @@ void handleAdminSettings () {
   message += "</body>\n";
   message += "</html>\n";
 
-  send( message );
+  server.send ( 200, "text/html", message );
 }
 
 
@@ -486,5 +476,5 @@ void handleAdminFrameset () {
   message += "<frame name=right src=\"about:blank\" />\n";
   message += "</frameset>\n";
 
-  send( message );
+  server.send ( 200, "text/html", message );
 }

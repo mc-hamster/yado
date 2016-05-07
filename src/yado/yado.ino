@@ -39,6 +39,7 @@
 #include <EEPROM.h>
 #include "EEPROMAnything.h"
 
+
 // Configuration Start
 const uint8_t numberOfUsers = 5;
 const uint8_t passwordLength = 16;
@@ -89,6 +90,7 @@ struct settings_t
 
 int requestTTL = 120;
 
+
 // Configuration End
 
 const byte DNS_PORT = 53;
@@ -110,13 +112,9 @@ const int key_flash = 0; // If pressed within 5 seconds of power on, enter admin
 
 unsigned long secretRandNumber; // We will generate a new secret on startup.
 
-String menuPath = "0";
-
 int lastAccessTime = 0;
 
 String inputString = "";         // a string to hold incoming data
-boolean stringComplete = false;  // whether the string is complete
-
 
 boolean deviceAdmin = 0;
 
@@ -127,9 +125,14 @@ unsigned long    ledHTTPStateMills = 0;
 long    ledHTTPStateInterval = 250; // How fast to blink the LED
 
 
+
 void setup ( void ) {
   EEPROM.begin(1024); // 512 bytes should be more than enough (famous last words)
   loadSettings();
+
+  // TODO: Move this into the admin setup menu.
+  settings.contactSensor[0].enabled = 1; // Manually enable this for now.
+
 
   inputString.reserve(50);
 
