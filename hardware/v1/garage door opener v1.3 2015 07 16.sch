@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="7.3.0">
+<eagle version="7.5.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -9973,7 +9973,7 @@ Each DS18B20 has a unique 64-bit serial code, which allows multiple DS18B20s to 
 <part name="D4" library="SparkFun-LED" deviceset="LED" device="0603"/>
 <part name="DS18B20" library="Ava" deviceset="DS1820" device="TO92" value="DS18B20TO92"/>
 <part name="+3V5" library="supply1" deviceset="+3V3" device=""/>
-<part name="R9" library="resistor" deviceset="R-US_" device="R0603" value="3.3k"/>
+<part name="R9" library="resistor" deviceset="R-US_" device="R0603" value="43.2"/>
 <part name="GND8" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
