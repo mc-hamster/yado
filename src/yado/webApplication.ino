@@ -6,17 +6,6 @@ void handleExternalScriptJS() {
 
 
   String externJavascriptString = "\n"
-                                  "function validateForm () { \n"
-                                  "  var x = document.forms['myForm']['password'].value;\n"
-                                  "  if (x == null || x == '') {\n"
-                                  "      alert('Password must be filled');\n"
-                                  "      return false;\n"
-                                  "  }\n"
-                                  "  var requestPassword = CryptoJS.SHA1(document.forms['myForm']['password'].value + document.forms['myForm']['serverDigest'].value);\n"
-                                  "  document.forms['myForm']['password'].value = '';\n"
-                                  "  document.forms['myForm']['requestPassword'].value = requestPassword;\n"
-                                  "  return true; \n"
-                                  "}\n"
                                   "/*CryptoJS v3.1.2\n"
                                   "code.google.com/p/crypto-js\n"
                                   "(c) 2009-2013 by Jeff Mott. All rights reserved.\n"
@@ -174,8 +163,8 @@ void handleRoot() {
   message += "  <link rel=\"icon\" href=\"data:;base64,iVBORw0KGgo=\">\n";
   message += "  <title>Garage Door Opener</title>\n";
   message += "  <link rel=\"stylesheet\" href=\"/yado.css\">\n";
-  //  message += "  <!script src='externalScript.js'></script>\n";
-  message += "  <script src='http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha1.js'></script>\n";
+  message += "  <script src='externalScript.js'></script>\n";
+  //message += "  <script src='http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha1.js'></script>\n";
   message += "  <script>\n";
 
   message += "function validateForm () { \n";

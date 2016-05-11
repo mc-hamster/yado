@@ -132,6 +132,7 @@ void setup ( void ) {
 
   // TODO: Move this into the admin setup menu.
   settings.contactSensor[0].enabled = 1; // Manually enable this for now.
+  settings.contactSensor[0].invert = 9; // Manually enable this for now.
 
 
   inputString.reserve(50);
