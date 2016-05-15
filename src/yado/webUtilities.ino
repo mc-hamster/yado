@@ -3,7 +3,7 @@
 //   the performance issue in the stock library. We may be able to get rid of this some time in the
 //   future if the library's version of send is fixed.
 void sendMime (String mimeType, String message) {
-  WiFiClient client = server.client();
+  WiFiClient client = httpServer.client();
 
   client.println("HTTP/1.1 200 OK");
   client.println("Content-Type: " + mimeType);

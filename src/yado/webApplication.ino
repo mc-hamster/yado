@@ -31,10 +31,10 @@ void handleExternalScriptJS() {
 
 
     // Define header to encourage browsers to cache this page.
-    server.sendHeader ( "ETag", "CacheThisForever", 0 );
-    server.sendHeader ( "Expires", "Mon, 08 Jun 2035 00:19:36 GMT", 0 );
-    server.sendHeader ( "Cache-Control", "public, max-age=31536000", 0 ); // 31536000 = 1 year
-    server.send ( 200, "text/plain", externJavascriptString );
+    httpServer.sendHeader ( "ETag", "CacheThisForever", 0 );
+    httpServer.sendHeader ( "Expires", "Mon, 08 Jun 2035 00:19:36 GMT", 0 );
+    httpServer.sendHeader ( "Cache-Control", "public, max-age=31536000", 0 ); // 31536000 = 1 year
+    httpServer.send ( 200, "text/plain", externJavascriptString );
   }
 
   digitalWrite ( ledHTTP, 0 );
@@ -51,7 +51,7 @@ void handleJSONSensors () {
   message += "  }\n";
   message += "}\n";
 
-  server.send ( 200, "application/json", message );
+  httpServer.send ( 200, "application/json", message );
 
   digitalWrite ( ledHTTP, 0 );
 }
@@ -72,7 +72,7 @@ void handleJSONDigestNew () {
   message += "  }\n";
   message += "}\n";
 
-  server.send ( 200, "application/json", message );
+  httpServer.send ( 200, "application/json", message );
 
   digitalWrite ( ledHTTP, 0 );
 }
@@ -95,7 +95,7 @@ void handleRoot() {
 
   char digestStringHex2[41];
 
-  String requestTime = server.arg("time");
+  String requestTime = httpServer.arg("time");
   String errorString = "";
 
   if ( requestTime.toInt() ) {
@@ -119,9 +119,9 @@ void handleRoot() {
 
 
   // Only do something if the password is provided.
-  if ( server.arg("requestPassword") != "") {
+  if ( httpServer.arg("requestPassword") != "") {
 
-    boolean isPasswordValid = validatePassword ( requestTime.toInt(), server.arg("requestPassword") );
+    boolean isPasswordValid = validatePassword ( requestTime.toInt(), httpServer.arg("requestPassword") );
 
     if (requestRangeValid == 1 && isPasswordValid == true) {
 
@@ -202,7 +202,7 @@ void handleRoot() {
   message += "</body>\n";
   message += "</html>\n";
 
-  server.send ( 200, "text/html", message );
+  httpServer.send ( 200, "text/html", message );
   digitalWrite ( ledHTTP, 0 );
 
 }
@@ -211,19 +211,19 @@ void handleNotFound() {
   digitalWrite ( ledHTTP, 1 );
   String message = "File Not Found\n\n";
   message += "URI: ";
-  message += server.uri();
+  message += httpServer.uri();
   message += "\nMethod: ";
-  message += ( server.method() == HTTP_GET ) ? "GET" : "POST";
+  message += ( httpServer.method() == HTTP_GET ) ? "GET" : "POST";
   message += "\nArguments: ";
-  message += server.args();
+  message += httpServer.args();
   message += "\n";
 
-  for ( uint8_t i = 0; i < server.args(); i++ ) {
-    message += " " + server.argName ( i ) + ": " + server.arg ( i ) + "\n";
+  for ( uint8_t i = 0; i < httpServer.args(); i++ ) {
+    message += " " + httpServer.argName ( i ) + ": " + httpServer.arg ( i ) + "\n";
   }
 
 
-  server.send ( 404, "text/plain", message );
+  httpServer.send ( 404, "text/plain", message );
   digitalWrite ( ledHTTP, 0 );
 }
 
@@ -301,11 +301,11 @@ void handleCSS () {
   message += "background-color: #999933;\n";
   message += "font-weight: bold;\n";
 
-  //server.sendHeader ( "ETag", "CacheThisForever", 0 );
-  //server.sendHeader ( "Expires", "Mon, 08 Jun 2035 00:19:36 GMT", 0 );
-  //server.sendHeader ( "Cache-Control", "public, max-age=31536000", 0 ); // 31536000 = 1 year
+  //httpServer.sendHeader ( "ETag", "CacheThisForever", 0 );
+  //httpServer.sendHeader ( "Expires", "Mon, 08 Jun 2035 00:19:36 GMT", 0 );
+  //httpServer.sendHeader ( "Cache-Control", "public, max-age=31536000", 0 ); // 31536000 = 1 year
 
-  //server.send ( 200, "text/css", message );
+  //httpServer.send ( 200, "text/css", message );
   sendMime ( "text/css", message );
 
   digitalWrite ( ledHTTP, 0 );

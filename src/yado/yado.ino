@@ -1,7 +1,7 @@
 
 
 /*
- * Copyright (c) 2015, Jm Casler
+ * Copyright (c) 2015-2016, Jm Casler
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -39,6 +39,9 @@
 #include <EEPROM.h>
 #include "EEPROMAnything.h"
 
+#include <ESP8266HTTPUpdateServer.h>
+#include <ESP8266mDNS.h>
+
 
 // Configuration Start
 const uint8_t numberOfUsers = 5;
@@ -46,6 +49,8 @@ const uint8_t passwordLength = 16;
 const uint8_t noteLength = 32;
 
 const uint8_t sensorLabelLength = 16;
+
+const char* host = "yado";
 
 // Contact sensors
 struct sensor_t
@@ -94,7 +99,8 @@ int requestTTL = 120;
 // Configuration End
 
 const byte DNS_PORT = 53;
-ESP8266WebServer server ( 80 );
+ESP8266WebServer httpServer ( 80 );
+ESP8266HTTPUpdateServer httpUpdater;
 DNSServer dnsServer;
 
 // Pin Assignment
@@ -188,24 +194,39 @@ void setup ( void ) {
     Serial.println ( WiFi.softAPIP() );
     printAPMacAddress();
 
+
+    if ( MDNS.begin ( host ) ) {
+      Serial.println ( "MDNS responder started" );
+    } else {
+      Serial.println ( "MDNS responder NOT started" );
+    }
+
     // We are using the amount of time required to connect to the AP as the seed to a random number generator.
     //   We should look for other ways to improve the seed. This should be "good enough" for now.
 
-    server.on ( "/", handleAdminFrameset );
-    server.on ( "/leftnav", handleAdminNav );
-    server.on ( "/conf/wifi", handleAdminConfWifi );
-    server.on ( "/conf/network", handleAdminConfNetwork );
-    server.on ( "/conf/accounts", handleAdminConfAccounts );
-    server.on ( "/conf/sensors", handleAdminConfSensors );
-    server.on ( "/system/defaults", handleAdminDefaults );
-    server.on ( "/system/settings", handleAdminSettings );
-    server.on ( "/system/restart", handleAdminRestart);
-    server.on ( "/system/apply", handleAdminApply);
-    server.on ( "/yado.css", handleCSS);
+    httpServer.on ( "/", handleAdminFrameset );
+    httpServer.on ( "/leftnav", handleAdminNav );
+    httpServer.on ( "/conf/wifi", handleAdminConfWifi );
+    httpServer.on ( "/conf/network", handleAdminConfNetwork );
+    httpServer.on ( "/conf/accounts", handleAdminConfAccounts );
+    httpServer.on ( "/conf/sensors", handleAdminConfSensors );
+    httpServer.on ( "/system/defaults", handleAdminDefaults );
+    httpServer.on ( "/system/settings", handleAdminSettings );
+    httpServer.on ( "/system/restart", handleAdminRestart);
+    httpServer.on ( "/system/apply", handleAdminApply);
+    httpServer.on ( "/yado.css", handleCSS);
 
-    server.onNotFound ( handleNotFound );
-    server.begin();
+    httpServer.onNotFound ( handleNotFound );
+
+    httpUpdater.setup(&httpServer); // Handle OTA Updates. Go to http://yado.local/update
+
+    httpServer.begin();
     Serial.println ( "HTTP server started" );
+
+    MDNS.addService("http", "tcp", 80);
+    Serial.printf("HTTPServer ready! Open http://%s.local in your browser\n", host);
+    Serial.printf("HTTPUpdateServer ready! Open http://%s.local/update in your browser\n", host);
+
 
   } else {
     WiFi.begin ( settings.ssid, settings.ssidPassword );
@@ -236,22 +257,32 @@ void setup ( void ) {
     Serial.println ( WiFi.localIP() );
     printMacAddress();
 
+    if ( MDNS.begin ( host ) ) {
+      Serial.println ( "MDNS responder started" );
+    } else {
+      Serial.println ( "MDNS responder NOT started" );
+    }
+
     // We are using the amount of time required to connect to the AP as the seed to a random number generator.
     //   We should look for other ways to improve the seed. This should be "good enough" for now.
     randomSeed(micros());
     secretRandNumber = random(2147483646); // Full range of long 2147483647
     Serial.println("Secret: " + String(secretRandNumber));
 
-    server.on ( "/", handleRoot );
-    server.on ( "/externalScript.js", handleExternalScriptJS );
-    server.on ( "/json/sensors", handleJSONSensors );
-    server.on ( "/json/digest/new", handleJSONDigestNew );
-    //    server.on ( "/handleBigResponse", handleBigResponse );
-    server.on ( "/yado.css", handleCSS);
+    httpServer.on ( "/", handleRoot );
+    httpServer.on ( "/externalScript.js", handleExternalScriptJS );
+    httpServer.on ( "/json/sensors", handleJSONSensors );
+    httpServer.on ( "/json/digest/new", handleJSONDigestNew );
+    httpServer.on ( "/yado.css", handleCSS);
 
-    server.onNotFound ( handleNotFound );
-    server.begin();
+    httpServer.onNotFound ( handleNotFound );
+    httpServer.begin();
     Serial.println ( "HTTP server started" );
+
+    MDNS.addService("http", "tcp", 80);
+    Serial.printf("HTTP Server ready! Open http://%s.local in your browser\n", host);
+
+  
   }
 
 }
@@ -259,7 +290,7 @@ void setup ( void ) {
 
 void loop ( void ) {
 
-  server.handleClient();
+  httpServer.handleClient();
   dnsServer.processNextRequest();
 
   if (deviceAdmin) {
