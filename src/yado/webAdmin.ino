@@ -25,7 +25,7 @@ void handleAdminNav() {
   message += "  <h2>Preview</h2>\n";
   message += "  <a href=/system/settings target=right>Display Settings</a><br>\n";
   message += "  <br>\n";
-  //  message += "  Auto Restart in ... 30:00\n";
+
   message += "</body>\n";
   message += "</html>\n";
 
@@ -344,9 +344,6 @@ void handleAdminDefaults( void ) {
   message += "</html>\n";
 
   httpServer.send ( 200, "text/html", message );
-
-  //delay(250);
-
 
 }
 

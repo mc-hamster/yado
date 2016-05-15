@@ -1,6 +1,4 @@
 
-//char tempArray[5000];
-
 void handleExternalScriptJS() {
   digitalWrite ( ledHTTP, 1 );
 
@@ -301,12 +299,11 @@ void handleCSS () {
   message += "background-color: #999933;\n";
   message += "font-weight: bold;\n";
 
-  //httpServer.sendHeader ( "ETag", "CacheThisForever", 0 );
-  //httpServer.sendHeader ( "Expires", "Mon, 08 Jun 2035 00:19:36 GMT", 0 );
-  //httpServer.sendHeader ( "Cache-Control", "public, max-age=31536000", 0 ); // 31536000 = 1 year
+  httpServer.sendHeader ( "ETag", "CacheThisForever", 0 );
+  httpServer.sendHeader ( "Expires", "Mon, 08 Jun 2035 00:19:36 GMT", 0 );
+  httpServer.sendHeader ( "Cache-Control", "public, max-age=31536000", 0 ); // 31536000 = 1 year
 
-  //httpServer.send ( 200, "text/css", message );
-  sendMime ( "text/css", message );
+  httpServer.send ( 200, "text/css", message );
 
   digitalWrite ( ledHTTP, 0 );
 }
